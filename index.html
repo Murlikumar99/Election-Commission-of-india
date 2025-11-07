@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election Commission of India — Bihar Polling 2025</title>
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- FingerprintJS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
+    <style>
+        :root {
+            --saffron: #FF9933;
+            --white: #FFFFFF;
+            --green: #138808;
+            --blue: #000080;
+            --light-blue: #E6F0FF;
+            --dark-red: #8B0000;
+            --navy-blue: #000080;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--white) 0%, var(--light-blue) 100%);
+            color: #333;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(to right, var(--saffron) 0%, var(--white) 33%, var(--green) 66%, var(--blue) 100%);
+            color: var(--blue);
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+            color: var(--blue);
+        }
+
+        .header-text {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--blue);
+            font-size: 1.8rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, var(--saffron), var(--green));
+        }
+
+        .voting-section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .party-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .party-btn {
+            padding: 1.5rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 220px;
+            box-shadow: var(--shadow);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .party-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .party-btn:hover:before {
+            left: 100%;
+        }
+
+        .party-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .party-btn i {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .btn-nda {
+            background: linear-gradient(135deg, var(--green), #0a6b00);
+        }
+
+        .btn-rjd {
+            background: linear-gradient(135deg, var(--dark-red), #6a0000);
+        }
+
+        .btn-jsp {
+            background: linear-gradient(135deg, var(--navy-blue), #000055);
+        }
+
+        .results-section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .results-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .result-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 8px;
+            background: #f8f9fa;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+
+        .result-item:hover {
+            transform: translateX(5px);
+        }
+
+        .party-color {
+            width: 20px;
+            height: 60px;
+            border-radius: 4px;
+            margin-right: 1rem;
+        }
+
+        .color-nda {
+            background: var(--green);
+        }
+
+        .color-rjd {
+            background: var(--dark-red);
+        }
+
+        .color-jsp {
+            background: var(--navy-blue);
+        }
+
+        .party-info {
+            flex-grow: 1;
+        }
+
+        .party-name {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .vote-count {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--blue);
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 1s ease-in-out;
+        }
+
+        .fill-nda {
+            background: var(--green);
+        }
+
+        .fill-rjd {
+            background: var(--dark-red);
+        }
+
+        .fill-jsp {
+            background: var(--navy-blue);
+        }
+
+        .percentage {
+            font-weight: 600;
+            color: #555;
+        }
+
+        footer {
+            background: var(--blue);
+            color: var(--white);
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .flag-icon {
+            font-size: 1.5rem;
+            color: var(--saffron);
+            margin-bottom: 0.5rem;
+        }
+
+        .developer-credit {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .leading-party-banner {
+            background: linear-gradient(135deg, var(--saffron), #ff8000);
+            color: white;
+            padding: 0.8rem;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            display: none;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 153, 51, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 153, 51, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 153, 51, 0); }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--blue);
+            font-weight: 600;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            border-color: var(--blue);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 0, 128, 0.1);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--blue), #000055);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #000055, var(--blue));
+        }
+
+        /* Fingerprint Verification */
+        .fingerprint-container {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .fingerprint-icon {
+            font-size: 4rem;
+            color: var(--blue);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .fingerprint-scan {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 0;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            animation: scan 2s infinite;
+        }
+
+        @keyframes scan {
+            0% { height: 0; }
+            50% { height: 60px; }
+            100% { height: 0; }
+        }
+
+        .verification-text {
+            font-size: 1.2rem;
+            color: var(--blue);
+            margin-bottom: 1rem;
+        }
+
+        /* Vote Confirmation */
+        .confirmation-icon {
+            font-size: 4rem;
+            color: var(--green);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .confirmation-text {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--blue);
+            text-align: center;
+        }
+
+        .receipt {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 1px dashed #ccc;
+        }
+
+        .receipt-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--blue);
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 0.5rem;
+        }
+
+        .receipt-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .receipt-label {
+            font-weight: 600;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, var(--green), #0a6b00);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(135deg, #0a6b00, var(--green));
+        }
+
+        /* Instructions Section */
+        .instructions-section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .instructions-list {
+            list-style-type: none;
+            margin: 1rem 0;
+        }
+
+        .instructions-list li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .instructions-list li:before {
+            content: '•';
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        /* Exit Polls Section */
+        .exit-polls-section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .exit-polls-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .exit-polls-title {
+            color: var(--blue);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .live-badge {
+            background: linear-gradient(135deg, #ff0000, #cc0000);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .exit-polls-subtitle {
+            color: #555;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .exit-polls-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .exit-polls-table th {
+            background: linear-gradient(135deg, var(--blue), #000055);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .exit-polls-table td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .exit-polls-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .agency-name {
+            font-weight: 600;
+            color: var(--blue);
+            text-align: left;
+        }
+
+        .seat-range {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .nda-seats {
+            color: var(--green);
+        }
+
+        .mgb-seats {
+            color: var(--dark-red);
+        }
+
+        .oth-seats {
+            color: #666;
+        }
+
+        .exit-polls-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-weight: 600;
+            color: var(--blue);
+            font-size: 1.1rem;
+        }
+
+        .designer-credit {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        .buddha-silhouette {
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            opacity: 0.05;
+            font-size: 8rem;
+            color: var(--blue);
+            transform: rotate(-10deg);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo-container {
+                margin-bottom: 1rem;
+            }
+            
+            .party-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .party-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .receipt-details {
+                grid-template-columns: 1fr;
+            }
+
+            .exit-polls-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .exit-polls-table {
+                font-size: 0.9rem;
+            }
+
+            .exit-polls-table th, 
+            .exit-polls-table td {
+                padding: 0.7rem 0.5rem;
+            }
+
+            .designer-credit {
+                position: static;
+                text-align: right;
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header data-aos="fade-down">
+        <div class="header-content">
+            <div class="logo-container">
+                <i class="fas fa-vote-yea logo"></i>
+            </div>
+            <div class="header-text">
+                <h1>Election Commission of India</h1>
+                <p class="subtitle">Bihar Polling 2025</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Instructions Section -->
+        <section class="instructions-section" data-aos="fade-up">
+            <h2 class="section-title">Voting Instructions</h2>
+            <p>Welcome to the official online voting portal for Bihar State Elections 2025. Follow these steps to cast your vote:</p>
+            <ul class="instructions-list">
+                <li>Click on the party of your choice to begin the voting process</li>
+                <li>Enter your full name and Aadhaar number for verification</li>
+                <li>Complete the fingerprint verification process</li>
+                <li>Confirm your vote selection</li>
+                <li>Download your voting receipt for your records</li>
+            </ul>
+            <p style="font-weight: 600; color: var(--blue);">Your vote is confidential and secure. Each Aadhaar number can only vote once.</p>
+        </section>
+
+        <!-- Voting Section -->
+        <section class="voting-section" data-aos="fade-up">
+            <h2 class="section-title">Cast Your Vote</h2>
+            <p style="text-align: center; margin-bottom: 1rem;">Select your preferred party to cast your vote in the Bihar Polling 2025.</p>
+            
+            <!-- Leading Party Banner -->
+            <div class="leading-party-banner" id="leadingBanner">
+                <i class="fas fa-crown"></i> <span id="leadingPartyName">NDA</span> is currently leading the polls!
+            </div>
+            
+            <div class="party-buttons">
+                <button class="party-btn btn-nda" data-aos="fade-up" data-aos-delay="100" onclick="startVotingProcess('nda')">
+                    <i class="fas fa-lotus"></i>
+                    <span>NDA</span>
+                    <small>National Democratic Alliance</small>
+                </button>
+                
+                <button class="party-btn btn-rjd" data-aos="fade-up" data-aos-delay="200" onclick="startVotingProcess('rjd')">
+                    <i class="fas fa-handshake"></i>
+                    <span>RJD</span>
+                    <small>Rashtriya Janata Dal</small>
+                </button>
+                
+                <button class="party-btn btn-jsp" data-aos="fade-up" data-aos-delay="300" onclick="startVotingProcess('jsp')">
+                    <i class="fas fa-star"></i>
+                    <span>Jan Sauraj Party</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section" data-aos="fade-up">
+            <h2 class="section-title">Election Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalVoters">0</div>
+                    <div class="stat-label">Registered Voters</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="votesCast">0</div>
+                    <div class="stat-label">Votes Cast</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="turnoutPercentage">0%</div>
+                    <div class="stat-label">Voter Turnout</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Exit Polls Section -->
+        <section class="exit-polls-section" data-aos="zoom-in">
+            <div class="designer-credit">Design by Murli Kumar</div>
+            <i class="fas fa-vote-yea buddha-silhouette"></i>
+            
+            <div class="exit-polls-header">
+                <h2 class="exit-polls-title">Bihar Assembly Election 2025 – Exit Poll Results</h2>
+                <div class="live-badge">
+                    <i class="fas fa-circle"></i> LIVE UPDATE
+                </div>
+            </div>
+            
+            <p class="exit-polls-subtitle">Mega Opinion Poll – All Agencies Predictions</p>
+            
+            <table class="exit-polls-table">
+                <thead>
+                    <tr>
+                        <th>Agency</th>
+                        <th>NDA</th>
+                        <th>MGB</th>
+                        <th>OTH</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="agency-name">MATRIZE-IANS</td>
+                        <td class="seat-range nda-seats">153–164</td>
+                        <td class="seat-range mgb-seats">76–87</td>
+                        <td class="seat-range oth-seats">00–07</td>
+                    </tr>
+                    <tr>
+                        <td class="agency-name">Chanakya Strategies</td>
+                        <td class="seat-range nda-seats">128–134</td>
+                        <td class="seat-range mgb-seats">102–108</td>
+                        <td class="seat-range oth-seats">05–09</td>
+                    </tr>
+                    <tr>
+                        <td class="agency-name">Polstrat & People's Insight</td>
+                        <td class="seat-range nda-seats">133–143</td>
+                        <td class="seat-range mgb-seats">93–102</td>
+                        <td class="seat-range oth-seats">02–09</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="exit-polls-footer">Total Seats – 243</div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section" data-aos="zoom-in">
+            <h2 class="section-title">Live Results</h2>
+            <div class="results-container">
+                <div class="result-item">
+                    <div class="party-color color-nda"></div>
+                    <div class="party-info">
+                        <div class="party-name">NDA (National Democratic Alliance)</div>
+                        <div class="vote-count" id="ndaCount">0</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill fill-nda" id="ndaProgress" style="width: 0%"></div>
+                        </div>
+                        <div class="percentage" id="ndaPercentage">0%</div>
+                    </div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="party-color color-rjd"></div>
+                    <div class="party-info">
+                        <div class="party-name">RJD (Rashtriya Janata Dal)</div>
+                        <div class="vote-count" id="rjdCount">0</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill fill-rjd" id="rjdProgress" style="width: 0%"></div>
+                        </div>
+                        <div class="percentage" id="rjdPercentage">0%</div>
+                    </div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="party-color color-jsp"></div>
+                    <div class="party-info">
+                        <div class="party-name">Jan Sauraj Party</div>
+                        <div class="vote-count" id="jspCount">0</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill fill-jsp" id="jspProgress" style="width: 0%"></div>
+                        </div>
+                        <div class="percentage" id="jspPercentage">0%</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer data-aos="fade-up">
+        <div class="footer-content">
+            <i class="fas fa-flag flag-icon"></i>
+            <p>© 2025 Election Commission of India</p>
+            <p>This is the official online voting portal for Bihar State Elections 2025.</p>
+            <div class="developer-credit">Website development by Murli Kumar</div>
+        </div>
+    </footer>
+
+    <!-- Voter Registration Modal -->
+    <div class="overlay" id="overlay"></div>
+    <div class="modal" id="voterRegistrationModal">
+        <div class="modal-header">
+            <div class="modal-title">Voter Registration</div>
+            <button class="close-modal" onclick="closeModal('voterRegistrationModal')">&times;</button>
+        </div>
+        <form id="voterRegistrationForm">
+            <div class="form-group">
+                <label class="form-label" for="voterName">Full Name</label>
+                <input type="text" class="form-input" id="voterName" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="aadhaarNumber">Aadhaar Number</label>
+                <input type="text" class="form-input" id="aadhaarNumber" placeholder="Enter 12-digit Aadhaar number" pattern="[0-9]{12}" required>
+            </div>
+            <button type="submit" class="submit-btn">Verify & Continue</button>
+        </form>
+    </div>
+
+    <!-- Fingerprint Verification Modal -->
+    <div class="modal" id="fingerprintModal">
+        <div class="modal-header">
+            <div class="modal-title">Identity Verification</div>
+            <button class="close-modal" onclick="closeModal('fingerprintModal')">&times;</button>
+        </div>
+        <div class="fingerprint-container">
+            <div class="fingerprint-icon">
+                <i class="fas fa-fingerprint"></i>
+                <div class="fingerprint-scan"></div>
+            </div>
+            <div class="verification-text">Verifying your identity...</div>
+            <p style="text-align: center;">Please wait while we verify your fingerprint and Aadhaar details.</p>
+        </div>
+    </div>
+
+    <!-- Vote Confirmation Modal -->
+    <div class="modal" id="voteConfirmationModal">
+        <div class="modal-header">
+            <div class="modal-title">Confirm Your Vote</div>
+            <button class="close-modal" onclick="closeModal('voteConfirmationModal')">&times;</button>
+        </div>
+        <div class="confirmation-text">You are about to vote for:</div>
+        <div class="party-btn" id="confirmPartyBtn" style="width: 100%; margin: 1rem 0; pointer-events: none;">
+            <i class="fas fa-question"></i>
+            <span id="confirmPartyName">Party Name</span>
+        </div>
+        <p style="text-align: center; margin-bottom: 1rem;">Please confirm your selection. This action cannot be changed.</p>
+        <button class="submit-btn" onclick="confirmVote()">Confirm Vote</button>
+    </div>
+
+    <!-- Vote Success Modal -->
+    <div class="modal" id="voteSuccessModal">
+        <div class="modal-header">
+            <div class="modal-title">Vote Successfully Cast</div>
+            <button class="close-modal" onclick="closeModal('voteSuccessModal')">&times;</button>
+        </div>
+        <div class="confirmation-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="confirmation-text">Your vote has been successfully recorded!</div>
+        
+        <div class="receipt">
+            <div class="receipt-title">Voting Receipt</div>
+            <div class="receipt-details">
+                <div class="receipt-label">Voter Name:</div>
+                <div id="receiptName">-</div>
+                
+                <div class="receipt-label">Aadhaar Number:</div>
+                <div id="receiptAadhaar">-</div>
+                
+                <div class="receipt-label">Voted For:</div>
+                <div id="receiptParty">-</div>
+                
+                <div class="receipt-label">Vote ID:</div>
+                <div id="receiptVoteId">-</div>
+                
+                <div class="receipt-label">Time:</div>
+                <div id="receiptTime">-</div>
+            </div>
+        </div>
+        
+        <button class="download-btn" onclick="downloadReceipt()">
+            <i class="fas fa-download"></i> Download Receipt
+        </button>
+    </div>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- html2canvas for receipt download -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+
+        // Global variables
+        let selectedParty = '';
+        let currentVoter = {};
+        let fingerprintVerified = false;
+
+        // Initialize vote counts in localStorage if not present
+        function initializeVotes() {
+            if (!localStorage.getItem('ndaVotes')) {
+                localStorage.setItem('ndaVotes', '0');
+                localStorage.setItem('rjdVotes', '0');
+                localStorage.setItem('jspVotes', '0');
+                localStorage.setItem('voterCount', '0');
+                localStorage.setItem('voterList', JSON.stringify([]));
+            }
+            updateResults();
+            updateStats();
+        }
+
+        // Start the voting process
+        function startVotingProcess(party) {
+            // Check if user has already voted
+            const voterList = JSON.parse(localStorage.getItem('voterList') || '[]');
+            const userFingerprint = localStorage.getItem('userFingerprint');
+            
+            if (userFingerprint && voterList.includes(userFingerprint)) {
+                alert('You have already voted in this election. Each voter can only cast one vote.');
+                return;
+            }
+            
+            selectedParty = party;
+            openModal('voterRegistrationModal');
+        }
+
+        // Open modal
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        // Handle voter registration form submission
+        document.getElementById('voterRegistrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const voterName = document.getElementById('voterName').value;
+            const aadhaarNumber = document.getElementById('aadhaarNumber').value;
+            
+            // Basic validation
+            if (aadhaarNumber.length !== 12 || !/^\d+$/.test(aadhaarNumber)) {
+                alert('Please enter a valid 12-digit Aadhaar number.');
+                return;
+            }
+            
+            // Check if this Aadhaar has already voted
+            const voterList = JSON.parse(localStorage.getItem('voterList') || '[]');
+            if (voterList.includes(aadhaarNumber)) {
+                alert('This Aadhaar number has already voted. Each voter can only cast one vote.');
+                return;
+            }
+            
+            currentVoter = {
+                name: voterName,
+                aadhaar: aadhaarNumber,
+                party: selectedParty
+            };
+            
+            closeModal('voterRegistrationModal');
+            openModal('fingerprintModal');
+            
+            // Simulate fingerprint verification process
+            setTimeout(verifyFingerprint, 3000);
+        });
+
+        // Verify fingerprint (simulated)
+        function verifyFingerprint() {
+            fingerprintVerified = true;
+            
+            // Generate a unique fingerprint for the user
+            if (!localStorage.getItem('userFingerprint')) {
+                const fingerprint = 'FP' + Date.now().toString().slice(-8);
+                localStorage.setItem('userFingerprint', fingerprint);
+            }
+            
+            closeModal('fingerprintModal');
+            
+            // Show vote confirmation
+            document.getElementById('confirmPartyName').textContent = getPartyFullName(selectedParty);
+            document.getElementById('confirmPartyBtn').className = `party-btn btn-${selectedParty}`;
+            document.getElementById('confirmPartyBtn').querySelector('i').className = getPartyIcon(selectedParty);
+            
+            openModal('voteConfirmationModal');
+        }
+
+        // Confirm the vote
+        function confirmVote() {
+            if (!fingerprintVerified) {
+                alert('Please complete fingerprint verification first.');
+                return;
+            }
+            
+            // Get current votes
+            let ndaVotes = parseInt(localStorage.getItem('ndaVotes'));
+            let rjdVotes = parseInt(localStorage.getItem('rjdVotes'));
+            let jspVotes = parseInt(localStorage.getItem('jspVotes'));
+            let voterCount = parseInt(localStorage.getItem('voterCount'));
+            let voterList = JSON.parse(localStorage.getItem('voterList') || '[]');
+
+            // Increment the selected party's votes
+            if (selectedParty === 'nda') {
+                ndaVotes++;
+                localStorage.setItem('ndaVotes', ndaVotes.toString());
+            } else if (selectedParty === 'rjd') {
+                rjdVotes++;
+                localStorage.setItem('rjdVotes', rjdVotes.toString());
+            } else if (selectedParty === 'jsp') {
+                jspVotes++;
+                localStorage.setItem('jspVotes', jspVotes.toString());
+            }
+
+            // Update voter count and list
+            voterCount++;
+            voterList.push(currentVoter.aadhaar);
+            localStorage.setItem('voterCount', voterCount.toString());
+            localStorage.setItem('voterList', JSON.stringify(voterList));
+
+            // Generate vote ID and timestamp
+            const voteId = 'V' + Date.now().toString().slice(-8);
+            const voteTime = new Date().toLocaleString();
+
+            // Update receipt
+            document.getElementById('receiptName').textContent = currentVoter.name;
+            document.getElementById('receiptAadhaar').textContent = 'XXXX-XXXX-' + currentVoter.aadhaar.slice(-4);
+            document.getElementById('receiptParty').textContent = getPartyFullName(selectedParty);
+            document.getElementById('receiptVoteId').textContent = voteId;
+            document.getElementById('receiptTime').textContent = voteTime;
+
+            // Store receipt data for download
+            currentVoter.voteId = voteId;
+            currentVoter.time = voteTime;
+
+            closeModal('voteConfirmationModal');
+            openModal('voteSuccessModal');
+
+            // Update results and stats
+            updateResults();
+            updateStats();
+        }
+
+        // Download receipt as image
+        function downloadReceipt() {
+            const receiptElement = document.querySelector('.receipt');
+            
+            html2canvas(receiptElement).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `vote_receipt_${currentVoter.voteId}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+
+        // Update results display
+        function updateResults() {
+            // Get votes from localStorage
+            let ndaVotes = parseInt(localStorage.getItem('ndaVotes'));
+            let rjdVotes = parseInt(localStorage.getItem('rjdVotes'));
+            let jspVotes = parseInt(localStorage.getItem('jspVotes'));
+
+            // Calculate total votes
+            let totalVotes = ndaVotes + rjdVotes + jspVotes;
+
+            // Calculate percentages
+            let ndaPercentage = totalVotes > 0 ? (ndaVotes / totalVotes * 100).toFixed(1) : 0;
+            let rjdPercentage = totalVotes > 0 ? (rjdVotes / totalVotes * 100).toFixed(1) : 0;
+            let jspPercentage = totalVotes > 0 ? (jspVotes / totalVotes * 100).toFixed(1) : 0;
+
+            // Update vote counts
+            document.getElementById('ndaCount').textContent = ndaVotes;
+            document.getElementById('rjdCount').textContent = rjdVotes;
+            document.getElementById('jspCount').textContent = jspVotes;
+
+            // Update progress bars with animation
+            setTimeout(() => {
+                document.getElementById('ndaProgress').style.width = ndaPercentage + '%';
+                document.getElementById('rjdProgress').style.width = rjdPercentage + '%';
+                document.getElementById('jspProgress').style.width = jspPercentage + '%';
+            }, 100);
+
+            // Update percentages
+            document.getElementById('ndaPercentage').textContent = ndaPercentage + '%';
+            document.getElementById('rjdPercentage').textContent = rjdPercentage + '%';
+            document.getElementById('jspPercentage').textContent = jspPercentage + '%';
+
+            // Update leading party banner
+            updateLeadingParty(ndaVotes, rjdVotes, jspVotes);
+        }
+
+        // Update statistics
+        function updateStats() {
+            const voterCount = parseInt(localStorage.getItem('voterCount') || '0');
+            const totalVotes = parseInt(localStorage.getItem('ndaVotes')) + 
+                              parseInt(localStorage.getItem('rjdVotes')) + 
+                              parseInt(localStorage.getItem('jspVotes'));
+            
+            // For demo purposes, we'll set a fixed number of registered voters
+            const registeredVoters = 10000;
+            const turnoutPercentage = ((voterCount / registeredVoters) * 100).toFixed(1);
+            
+            document.getElementById('totalVoters').textContent = registeredVoters.toLocaleString();
+            document.getElementById('votesCast').textContent = voterCount.toLocaleString();
+            document.getElementById('turnoutPercentage').textContent = turnoutPercentage + '%';
+        }
+
+        // Update leading party banner
+        function updateLeadingParty(nda, rjd, jsp) {
+            const banner = document.getElementById('leadingBanner');
+            const leadingPartyName = document.getElementById('leadingPartyName');
+            
+            if (nda > rjd && nda > jsp) {
+                leadingPartyName.textContent = 'NDA';
+                banner.style.display = 'block';
+            } else if (rjd > nda && rjd > jsp) {
+                leadingPartyName.textContent = 'RJD';
+                banner.style.display = 'block';
+            } else if (jsp > nda && jsp > rjd) {
+                leadingPartyName.textContent = 'Jan Sauraj Party';
+                banner.style.display = 'block';
+            } else {
+                banner.style.display = 'none';
+            }
+        }
+
+        // Helper function to get party full name
+        function getPartyFullName(partyCode) {
+            switch(partyCode) {
+                case 'nda': return 'NDA (National Democratic Alliance)';
+                case 'rjd': return 'RJD (Rashtriya Janata Dal)';
+                case 'jsp': return 'Jan Sauraj Party';
+                default: return 'Unknown Party';
+            }
+        }
+
+        // Helper function to get party icon
+        function getPartyIcon(partyCode) {
+            switch(partyCode) {
+                case 'nda': return 'fas fa-lotus';
+                case 'rjd': return 'fas fa-handshake';
+                case 'jsp': return 'fas fa-star';
+                default: return 'fas fa-question';
+            }
+        }
+
+        // Initialize the app when page loads
+        window.onload = initializeVotes;
+    </script>
+</body>
+</html>
