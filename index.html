@@ -45,6 +45,8 @@
             --light-blue: #E6F0FF;
             --dark-red: #8B0000;
             --navy-blue: #000080;
+            --error-red: #e74c3c;
+            --error-light: #ffebee;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
         }
@@ -383,6 +385,18 @@
             display: none;
             width: 90%;
             max-width: 500px;
+            animation: modal-appear 0.3s ease-out;
+        }
+
+        @keyframes modal-appear {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
         }
 
         .modal-header {
@@ -406,6 +420,12 @@
             font-size: 1.5rem;
             cursor: pointer;
             color: #777;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--error-red);
+            transform: rotate(90deg);
         }
 
         .confirmation-icon {
@@ -469,6 +489,102 @@
 
         .download-btn:hover {
             background: linear-gradient(135deg, #0a6b00, var(--green));
+            transform: translateY(-2px);
+        }
+
+        /* Error Modal Styling */
+        .error-modal {
+            border-left: 6px solid var(--error-red);
+            background: var(--error-light);
+        }
+
+        .error-modal .modal-header {
+            border-bottom: 1px solid #ffcdd2;
+        }
+
+        .error-modal .modal-title {
+            color: var(--error-red);
+        }
+
+        .error-icon {
+            font-size: 4rem;
+            color: var(--error-red);
+            margin-bottom: 1rem;
+            text-align: center;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        .error-text {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--error-red);
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .error-details {
+            background: white;
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            border: 1px solid #ffcdd2;
+        }
+
+        .error-details-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--error-red);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .error-details-list {
+            list-style-type: none;
+            margin: 0.8rem 0;
+        }
+
+        .error-details-list li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .error-details-list li:before {
+            content: '•';
+            color: var(--error-red);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .error-btn {
+            background: linear-gradient(135deg, var(--error-red), #c0392b);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .error-btn:hover {
+            background: linear-gradient(135deg, #c0392b, var(--error-red));
+            transform: translateY(-2px);
         }
 
         /* Instructions Section */
@@ -968,6 +1084,33 @@
         </button>
     </div>
 
+    <!-- Error Modal -->
+    <div class="modal error-modal" id="errorModal">
+        <div class="modal-header">
+            <div class="modal-title">Voting Error</div>
+            <button class="close-modal" onclick="closeModal('errorModal')">&times;</button>
+        </div>
+        <div class="error-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div class="error-text">You have already voted from this device</div>
+
+        <div class="error-details">
+            <div class="error-details-title">
+                <i class="fas fa-info-circle"></i> Important Information
+            </div>
+            <ul class="error-details-list">
+                <li>Each device can only cast one vote to ensure election integrity</li>
+                <li>Your previous vote has been recorded and counted</li>
+                <li>If you believe this is an error, please contact election officials</li>
+            </ul>
+        </div>
+
+        <button class="error-btn" onclick="closeModal('errorModal')">
+            <i class="fas fa-times"></i> Close
+        </button>
+    </div>
+
     <!-- AOS JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <!-- html2canvas for receipt download -->
@@ -1072,7 +1215,7 @@
         function startVotingProcess(party) {
             // Check if device has already voted
             if (localStorage.getItem('hasVoted')) {
-                alert('You have already voted from this device. Each device can only vote once.');
+                showErrorModal();
                 return;
             }
 
@@ -1084,6 +1227,11 @@
             document.getElementById('confirmPartyBtn').querySelector('i').className = getPartyIcon(selectedParty);
 
             openModal('voteConfirmationModal');
+        }
+
+        // Show error modal for already voted
+        function showErrorModal() {
+            openModal('errorModal');
         }
 
         // Open modal
@@ -1245,6 +1393,7 @@
         window.closeModal = closeModal;
         window.confirmVote = confirmVote;
         window.downloadReceipt = downloadReceipt;
+        window.showErrorModal = showErrorModal;
 
         // Initialize the app when page loads
         window.addEventListener('DOMContentLoaded', initializeVotes);
