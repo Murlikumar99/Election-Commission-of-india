@@ -3,142 +3,386 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Election Commission of India — Bihar Polling 2025</title>
-
-    <!-- Meta Data for SEO and Social Media -->
-    <meta name="description" content="Official Bihar State Elections 2025 online voting portal. Cast your vote securely with one-click verification.">
-    <meta name="keywords" content="Bihar Election 2025, Online Voting, Election Commission of India, NDA, RJD, Jan Sauraj Party">
-    <meta name="author" content="Election Commission of India">
-    <meta name="robots" content="index, follow">
-
-    <!-- Open Graph Meta Tags for Social Media -->
-    <meta property="og:title" content="Election Commission of India - Bihar Polling 2025">
-    <meta property="og:description" content="Official Bihar State Elections 2025 online voting portal. Cast your vote securely with one-click verification.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://eci-bihar2025.gov.in">
-    <meta property="og:image" content="https://eci-bihar2025.gov.in/images/og-image.jpg">
-    <meta property="og:site_name" content="Election Commission of India">
-
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Election Commission of India - Bihar Polling 2025">
-    <meta name="twitter:description" content="Official Bihar State Elections 2025 online voting portal. Secure online voting with one-click verification.">
-    <meta name="twitter:image" content="https://eci-bihar2025.gov.in/images/twitter-image.jpg">
-
-    <!-- Additional Meta Tags -->
-    <meta name="theme-color" content="#000080">
-    <meta name="msapplication-TileColor" content="#000080">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-    <!-- AOS CSS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <!-- Font Awesome -->
+    <title>Election Commission - Government of India | Bihar Assembly Results 2025</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Hind+Siliguri:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --saffron: #FF9933;
             --white: #FFFFFF;
             --green: #138808;
             --blue: #000080;
-            --light-blue: #E6F0FF;
-            --dark-red: #8B0000;
-            --navy-blue: #000080;
-            --error-red: #e74c3c;
-            --error-light: #ffebee;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
+            --light-blue: #1a237e;
+            --dark-blue: #0d1440;
+            --gray: #f5f5f5;
+            --dark-gray: #333;
+            --text: #222;
+            --light-text: #666;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode {
+            --saffron: #FF9933;
+            --white: #121212;
+            --green: #138808;
+            --blue: #1a237e;
+            --light-blue: #283593;
+            --dark-blue: #0d1440;
+            --gray: #1e1e1e;
+            --dark-gray: #f5f5f5;
+            --text: #f0f0f0;
+            --light-text: #aaa;
+            --shadow: rgba(255, 255, 255, 0.05);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         body {
-            background: linear-gradient(135deg, var(--white) 0%, var(--light-blue) 100%);
-            color: #333;
-            min-height: 100vh;
-            line-height: 1.6;
+            font-family: 'Noto Sans', sans-serif;
+            background-color: var(--white);
+            color: var(--text);
+            overflow-x: hidden;
         }
 
-        header {
-            background: linear-gradient(to right, var(--saffron) 0%, var(--white) 33%, var(--green) 66%, var(--blue) 100%);
-            color: var(--blue);
-            padding: 1.5rem 2rem;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header-content {
+        /* Loading Spinner */
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
             display: flex;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 70px;
+            height: 70px;
+            border: 5px solid rgba(255, 153, 51, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--saffron);
+            border-right-color: var(--green);
+            border-bottom-color: var(--blue);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Popup Modal */
+        #popup-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .popup-content {
+            background: var(--white);
+            width: 90%;
+            max-width: 600px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+            animation: popIn 0.5s ease-out;
+        }
+
+        .popup-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+            margin: -3px;
+            border-radius: inherit;
+            background: linear-gradient(45deg, var(--saffron), var(--white), var(--green));
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .popup-header {
+            background: var(--blue);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .popup-header h2 {
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .popup-body {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .countdown-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--blue);
+            color: white;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px var(--shadow);
+        }
+
+        .countdown-label {
+            font-size: 0.8rem;
+            margin-top: 5px;
+            color: var(--light-text);
+        }
+
+        .popup-footer {
+            padding: 15px;
+            text-align: center;
+            background: var(--gray);
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+
+        /* Header & Navigation */
+        header {
+            background: var(--white);
+            box-shadow: 0 2px 10px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            background: linear-gradient(90deg, var(--saffron) 33%, var(--white) 33%, var(--white) 66%, var(--green) 66%);
+            height: 5px;
+        }
+
+        .navbar {
+            display: flex;
             justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
+            align-items: center;
+            padding: 15px 5%;
         }
 
         .logo-container {
             display: flex;
             align-items: center;
+            gap: 15px;
         }
 
         .logo {
-            font-size: 2.5rem;
-            margin-right: 1rem;
+            width: 50px;
+            height: 50px;
+            background: var(--blue);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .logo-text h1 {
+            font-size: 1.2rem;
+            font-weight: 700;
             color: var(--blue);
         }
 
-        .logo-meta {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .logo-title {
-            font-weight: 700;
-            font-size: 1.2rem;
-        }
-
-        .logo-subtitle {
+        .logo-text p {
             font-size: 0.8rem;
-            opacity: 0.8;
+            color: var(--light-text);
         }
 
-        .header-text {
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .theme-toggle {
+            background: var(--gray);
+            border: none;
+            width: 50px;
+            height: 26px;
+            border-radius: 50px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 0 5px;
+        }
+
+        .theme-toggle i {
+            font-size: 0.8rem;
+            color: var(--text);
+        }
+
+        .theme-toggle .sun {
+            margin-right: auto;
+        }
+
+        .theme-toggle .moon {
+            margin-left: auto;
+        }
+
+        .theme-toggle::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--blue);
+            left: 3px;
+            transition: transform 0.3s;
+        }
+
+        .dark-mode .theme-toggle::after {
+            transform: translateX(24px);
+        }
+
+        .share-btn {
+            background: var(--blue);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .share-btn:hover {
+            background: var(--light-blue);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--blue) 0%, var(--light-blue) 100%);
+            color: white;
+            padding: 60px 5%;
             text-align: center;
-            flex-grow: 1;
+            position: relative;
+            overflow: hidden;
         }
 
-        h1 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.1"><path fill="white" d="M50,5 L60,40 L95,40 L65,60 L75,95 L50,75 L25,95 L35,60 L5,40 L40,40 Z"/></svg>');
         }
 
-        .subtitle {
-            font-size: 1rem;
-            font-weight: 500;
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            position: relative;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 40px;
+            position: relative;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            width: 180px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Parties Section */
+        .parties-section {
+            padding: 80px 5%;
+            background: var(--gray);
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 2rem;
-            color: var(--blue);
-            font-size: 1.8rem;
+            margin-bottom: 50px;
             position: relative;
-            padding-bottom: 0.5rem;
         }
 
-        .section-title:after {
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--blue);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .section-title h2::after {
             content: '';
             position: absolute;
             bottom: 0;
@@ -146,1257 +390,911 @@
             transform: translateX(-50%);
             width: 100px;
             height: 3px;
-            background: linear-gradient(to right, var(--saffron), var(--green));
+            background: linear-gradient(90deg, var(--saffron), var(--white), var(--green));
         }
 
-        .voting-section {
+        .parties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .party-card {
             background: var(--white);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-        }
-
-        .party-buttons {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .party-btn {
-            padding: 1.5rem 2rem;
-            border: none;
             border-radius: 10px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 220px;
-            box-shadow: var(--shadow);
-            color: white;
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
-            overflow: hidden;
         }
 
-        .party-btn:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: 0.5s;
+        .party-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px var(--shadow);
         }
 
-        .party-btn:hover:before {
-            left: 100%;
-        }
-
-        .party-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .party-btn i {
-            font-size: 2.5rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .btn-nda {
-            background: linear-gradient(135deg, var(--green), #0a6b00);
-        }
-
-        .btn-rjd {
-            background: linear-gradient(135deg, var(--dark-red), #6a0000);
-        }
-
-        .btn-jsp {
-            background: linear-gradient(135deg, var(--navy-blue), #000055);
-        }
-
-        .results-section {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-        }
-
-        .results-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .result-item {
+        .party-header {
+            padding: 20px;
             display: flex;
             align-items: center;
-            padding: 1rem;
-            border-radius: 8px;
-            background: #f8f9fa;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            transition: var(--transition);
+            gap: 15px;
+            border-bottom: 1px solid var(--gray);
         }
 
-        .result-item:hover {
-            transform: translateX(5px);
-        }
-
-        .party-color {
-            width: 20px;
-            height: 60px;
-            border-radius: 4px;
-            margin-right: 1rem;
-        }
-
-        .color-nda {
-            background: var(--green);
-        }
-
-        .color-rjd {
-            background: var(--dark-red);
-        }
-
-        .color-jsp {
-            background: var(--navy-blue);
-        }
-
-        .party-info {
-            flex-grow: 1;
-        }
-
-        .party-name {
-            font-weight: 600;
-            font-size: 1.2rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .vote-count {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--blue);
-        }
-
-        .progress-bar {
-            height: 12px;
-            background: #e0e0e0;
-            border-radius: 6px;
-            overflow: hidden;
-            margin: 0.5rem 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            border-radius: 6px;
-            transition: width 1s ease-in-out;
-        }
-
-        .fill-nda {
-            background: var(--green);
-        }
-
-        .fill-rjd {
-            background: var(--dark-red);
-        }
-
-        .fill-jsp {
-            background: var(--navy-blue);
-        }
-
-        .percentage {
-            font-weight: 600;
-            color: #555;
-        }
-
-        footer {
-            background: var(--blue);
-            color: var(--white);
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .footer-content {
+        .party-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            gap: 0.5rem;
-        }
-
-        .flag-icon {
-            font-size: 1.5rem;
-            color: var(--saffron);
-            margin-bottom: 0.5rem;
-        }
-
-        .developer-credit {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .leading-party-banner {
-            background: linear-gradient(135deg, var(--saffron), #ff8000);
             color: white;
-            padding: 0.8rem;
-            text-align: center;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            font-weight: 600;
-            display: none;
-            animation: pulse 2s infinite;
+            font-weight: bold;
+            font-size: 1.2rem;
         }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 153, 51, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 153, 51, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 153, 51, 0); }
+        .party-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
         }
 
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 999;
-            display: none;
+        .party-info p {
+            font-size: 0.9rem;
+            color: var(--light-text);
         }
 
-        /* Modal Styles */
-        .modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            z-index: 1000;
-            display: none;
-            width: 90%;
-            max-width: 500px;
-            animation: modal-appear 0.3s ease-out;
-        }
-
-        @keyframes modal-appear {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -60%);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, -50%);
-            }
-        }
-
-        .modal-header {
+        .party-stats {
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 1rem;
         }
 
-        .modal-title {
-            font-size: 1.5rem;
-            color: var(--blue);
-            font-weight: 600;
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #777;
-            transition: var(--transition);
-        }
-
-        .close-modal:hover {
-            color: var(--error-red);
-            transform: rotate(90deg);
-        }
-
-        .confirmation-icon {
-            font-size: 4rem;
-            color: var(--green);
-            margin-bottom: 1rem;
+        .stat {
             text-align: center;
-        }
-
-        .confirmation-text {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--blue);
-            text-align: center;
-        }
-
-        .receipt {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border: 1px dashed #ccc;
-        }
-
-        .receipt-title {
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--blue);
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 0.5rem;
-        }
-
-        .receipt-details {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-        }
-
-        .receipt-label {
-            font-weight: 600;
-        }
-
-        .download-btn {
-            background: linear-gradient(135deg, var(--green), #0a6b00);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            width: 100%;
-            margin-top: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .download-btn:hover {
-            background: linear-gradient(135deg, #0a6b00, var(--green));
-            transform: translateY(-2px);
-        }
-
-        /* Error Modal Styling */
-        .error-modal {
-            border-left: 6px solid var(--error-red);
-            background: var(--error-light);
-        }
-
-        .error-modal .modal-header {
-            border-bottom: 1px solid #ffcdd2;
-        }
-
-        .error-modal .modal-title {
-            color: var(--error-red);
-        }
-
-        .error-icon {
-            font-size: 4rem;
-            color: var(--error-red);
-            margin-bottom: 1rem;
-            text-align: center;
-            animation: shake 0.5s ease-in-out;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-8px); }
-            40%, 80% { transform: translateX(8px); }
-        }
-
-        .error-text {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--error-red);
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .error-details {
-            background: white;
-            border-radius: 8px;
-            padding: 1.2rem;
-            margin: 1.5rem 0;
-            border: 1px solid #ffcdd2;
-        }
-
-        .error-details-title {
-            font-weight: 600;
-            margin-bottom: 0.8rem;
-            color: var(--error-red);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .error-details-list {
-            list-style-type: none;
-            margin: 0.8rem 0;
-        }
-
-        .error-details-list li {
-            margin-bottom: 0.5rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .error-details-list li:before {
-            content: '•';
-            color: var(--error-red);
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
-
-        .error-btn {
-            background: linear-gradient(135deg, var(--error-red), #c0392b);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            width: 100%;
-            margin-top: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .error-btn:hover {
-            background: linear-gradient(135deg, #c0392b, var(--error-red));
-            transform: translateY(-2px);
-        }
-
-        /* Instructions Section */
-        .instructions-section {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-        }
-
-        .instructions-list {
-            list-style-type: none;
-            margin: 1rem 0;
-        }
-
-        .instructions-list li {
-            margin-bottom: 0.8rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .instructions-list li:before {
-            content: '•';
-            color: var(--blue);
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
-
-        /* Stats Section */
-        .stats-section {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .stat-card {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
 
         .stat-value {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            color: var(--blue);
-            margin-bottom: 0.5rem;
+            margin-bottom: 5px;
         }
 
         .stat-label {
-            font-weight: 600;
-            color: #555;
+            font-size: 0.8rem;
+            color: var(--light-text);
         }
 
-        /* Exit Polls Section */
-        .exit-polls-section {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .exit-polls-header {
+        .trend {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .exit-polls-title {
-            color: var(--blue);
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        .live-badge {
-            background: linear-gradient(135deg, #ff0000, #cc0000);
-            color: white;
-            padding: 0.3rem 1rem;
-            border-radius: 20px;
-            font-weight: 600;
+            justify-content: center;
+            gap: 5px;
             font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            animation: blink 2s infinite;
+            margin-top: 5px;
         }
 
-        @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0.7; }
-            100% { opacity: 1; }
-        }
-
-        .exit-polls-subtitle {
-            color: #555;
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-        }
-
-        .exit-polls-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-        }
-
-        .exit-polls-table th {
-            background: linear-gradient(135deg, var(--blue), #000055);
-            color: white;
-            padding: 1rem;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .exit-polls-table td {
-            padding: 1rem;
-            text-align: center;
-            border-bottom: 1px solid #eee;
-        }
-
-        .exit-polls-table tr:hover {
-            background: #f8f9fa;
-        }
-
-        .agency-name {
-            font-weight: 600;
-            color: var(--blue);
-            text-align: left;
-        }
-
-        .seat-range {
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .nda-seats {
+        .trend.up {
             color: var(--green);
         }
 
-        .mgb-seats {
-            color: var(--dark-red);
+        .trend.down {
+            color: #e53935;
         }
 
-        .oth-seats {
-            color: #666;
+        /* Dashboard Section */
+        .dashboard-section {
+            padding: 80px 5%;
         }
 
-        .exit-polls-footer {
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .chart-container {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .chart-title {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--blue);
             text-align: center;
-            margin-top: 1.5rem;
+        }
+
+        .majority-mark {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: var(--gray);
+            border-radius: 10px;
+            border-left: 5px solid var(--saffron);
+        }
+
+        .majority-mark h3 {
+            font-size: 1.5rem;
+            color: var(--blue);
+            margin-bottom: 10px;
+        }
+
+        /* Constituencies Section */
+        .constituencies-section {
+            padding: 80px 5%;
+            background: var(--gray);
+        }
+
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--shadow);
+            background: var(--white);
+            font-size: 1rem;
+            box-shadow: 0 3px 10px var(--shadow);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--blue);
+        }
+
+        .constituencies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .constituency-card {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .constituency-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .constituency-header {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .constituency-name {
             font-weight: 600;
             color: var(--blue);
-            font-size: 1.1rem;
         }
 
-        .designer-credit {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 0.8rem;
-            color: #777;
-        }
-
-        .buddha-silhouette {
-            position: absolute;
-            bottom: -10px;
-            right: -10px;
-            opacity: 0.05;
-            font-size: 8rem;
-            color: var(--blue);
-            transform: rotate(-10deg);
-        }
-
-        /* Firebase Connection Status */
-        .connection-status {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            padding: 0.5rem 1rem;
+        .status {
+            padding: 5px 10px;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 600;
-            z-index: 1001;
+        }
+
+        .status.leading {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .status.won {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .constituency-body {
+            padding: 15px;
+        }
+
+        .candidate-info {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 15px;
         }
 
-        .status-connected {
-            background: var(--green);
+        .candidate-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--light-text);
+            font-size: 1.5rem;
+        }
+
+        .candidate-details h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .candidate-details p {
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+
+        .votes {
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-blue);
+            color: white;
+            padding: 60px 5% 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo .logo {
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+        }
+
+        .footer-logo-text h3 {
+            font-size: 1.2rem;
+        }
+
+        .footer-links h4 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-links h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--saffron);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
             color: white;
         }
 
-        .status-disconnected {
-            background: #cc0000;
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
             color: white;
+            transition: background 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--saffron);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .developer-credit {
+            margin-top: 10px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .developer-credit::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--saffron), transparent);
+            animation: glow 2s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .parties-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
         }
 
         @media (max-width: 768px) {
-            .header-content {
+            .navbar {
                 flex-direction: column;
-                text-align: center;
+                gap: 15px;
             }
-
-            .logo-container {
-                margin-bottom: 1rem;
+            
+            .logo-text h1 {
+                font-size: 1rem;
             }
-
-            .party-buttons {
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .stats-container {
                 flex-direction: column;
                 align-items: center;
             }
-
-            .party-btn {
-                width: 100%;
-                max-width: 300px;
-            }
-
-            h1 {
+            
+            .section-title h2 {
                 font-size: 1.5rem;
             }
+        }
 
-            .receipt-details {
+        @media (max-width: 576px) {
+            .parties-grid {
                 grid-template-columns: 1fr;
             }
-
-            .exit-polls-header {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: flex-start;
+            
+            .constituencies-grid {
+                grid-template-columns: 1fr;
             }
-
-            .exit-polls-table {
-                font-size: 0.9rem;
+            
+            .countdown {
+                gap: 10px;
             }
-
-            .exit-polls-table th, 
-            .exit-polls-table td {
-                padding: 0.7rem 0.5rem;
-            }
-
-            .designer-credit {
-                position: static;
-                text-align: right;
-                margin-top: 1rem;
+            
+            .countdown-number {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Firebase Connection Status -->
-    <div class="connection-status status-connected" id="connectionStatus">
-        <i class="fas fa-circle"></i> Connected to Database
+    <!-- Loading Screen -->
+    <div id="loading">
+        <div class="spinner"></div>
+        <p style="margin-top: 20px;">Loading Election Commission Portal...</p>
     </div>
 
-    <!-- Header Section -->
-    <header data-aos="fade-down">
-        <div class="header-content">
-            <div class="logo-container">
-                <i class="fas fa-vote-yea logo"></i>
-                <div class="logo-meta">
-                    <div class="logo-title">Election Commission</div>
-                    <div class="logo-subtitle">Government of India</div>
+    <!-- Popup Modal -->
+    <div id="popup-modal">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h2>Election Commission of India</h2>
+                <p>Bihar Legislative Assembly Elections 2025</p>
+            </div>
+            <div class="popup-body">
+                <p>General Election to Assembly Constituencies: Trends & Results November-2025</p>
+                <p>Results trends will start from 8:00 AM on 14th November-2025</p>
+                <p>Bihar – Total Assembly Constituencies: 243</p>
+                
+                <div class="countdown">
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="days">00</div>
+                        <div class="countdown-label">Days</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="hours">00</div>
+                        <div class="countdown-label">Hours</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="minutes">00</div>
+                        <div class="countdown-label">Minutes</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="seconds">00</div>
+                        <div class="countdown-label">Seconds</div>
+                    </div>
                 </div>
             </div>
-            <div class="header-text">
-                <h1>Election Commission of India</h1>
-                <p class="subtitle">Bihar Polling 2025</p>
+            <div class="popup-footer">
+                <p>Official Website of Election Commission of India</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-top"></div>
+        <div class="navbar">
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-vote-yea"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Election Commission of India</h1>
+                    <p>Bihar Assembly Results 2025</p>
+                </div>
+            </div>
+            <div class="nav-controls">
+                <button class="theme-toggle" id="theme-toggle">
+                    <i class="fas fa-sun sun"></i>
+                    <i class="fas fa-moon moon"></i>
+                </button>
+                <button class="share-btn" id="share-btn">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Instructions Section -->
-        <section class="instructions-section" data-aos="fade-up">
-            <h2 class="section-title">Voting Instructions</h2>
-            <p>Welcome to the official online voting portal for Bihar State Elections 2025. Follow these steps to cast your vote:</p>
-            <ul class="instructions-list">
-                <li>Click on the party of your choice to cast your vote</li>
-                <li>Confirm your selection in the popup window</li>
-                <li>Your vote will be recorded and you'll receive a confirmation</li>
-                <li>Each device can only vote once</li>
-            </ul>
-            <p style="font-weight: 600; color: var(--blue);">Your vote is confidential and secure. Each device can only vote once.</p>
-        </section>
-
-        <!-- Voting Section -->
-        <section class="voting-section" data-aos="fade-up">
-            <h2 class="section-title">Cast Your Vote</h2>
-            <p style="text-align: center; margin-bottom: 1rem;">Select your preferred party to cast your vote in the Bihar Polling 2025.</p>
-
-            <!-- Leading Party Banner -->
-            <div class="leading-party-banner" id="leadingBanner">
-                <i class="fas fa-crown"></i> <span id="leadingPartyName">NDA</span> is currently leading the polls!
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 data-aos="fade-up">Bihar Legislative Assembly Election Results 2025</h1>
+        <p data-aos="fade-up" data-aos-delay="200">Live counting trends and results for all 243 constituencies</p>
+        
+        <div class="stats-container">
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="stat-number">243</div>
+                <div class="stat-label">Total Constituencies</div>
             </div>
-
-            <div class="party-buttons">
-                <button class="party-btn btn-nda" data-aos="fade-up" data-aos-delay="100" onclick="startVotingProcess('nda')">
-                    <i class="fas fa-lotus"></i>
-                    <span>NDA</span>
-                    <small>National Democratic Alliance</small>
-                </button>
-
-                <button class="party-btn btn-rjd" data-aos="fade-up" data-aos-delay="200" onclick="startVotingProcess('rjd')">
-                    <i class="fas fa-handshake"></i>
-                    <span>RJD</span>
-                    <small>Rashtriya Janata Dal</small>
-                </button>
-
-                <button class="party-btn btn-jsp" data-aos="fade-up" data-aos-delay="300" onclick="startVotingProcess('jsp')">
-                    <i class="fas fa-star"></i>
-                    <span>Jan Suraaj Party</span>
-                </button>
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="stat-number">126</div>
+                <div class="stat-label">Majority Mark</div>
             </div>
-        </section>
-
-        <!-- Stats Section -->
-        <section class="stats-section" data-aos="fade-up">
-            <h2 class="section-title">Election Statistics</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value" id="totalVoters">0</div>
-                    <div class="stat-label">Registered Voters</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="votesCast">0</div>
-                    <div class="stat-label">Votes Cast</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="turnoutPercentage">0%</div>
-                    <div class="stat-label">Voter Turnout</div>
-                </div>
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="stat-number">78.2%</div>
+                <div class="stat-label">Voter Turnout</div>
             </div>
-        </section>
-
-        <!-- Exit Polls Section -->
-        <section class="exit-polls-section" data-aos="zoom-in">
-            <div class="designer-credit">Design by Murli Kumar</div>
-            <i class="fas fa-vote-yea buddha-silhouette"></i>
-
-            <div class="exit-polls-header">
-                <h2 class="exit-polls-title">Bihar Assembly Election 2025 – Exit Poll Results</h2>
-                <div class="live-badge">
-                    <i class="fas fa-circle"></i> LIVE UPDATE
-                </div>
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="600">
+                <div class="stat-number">15</div>
+                <div class="stat-label">Key Parties</div>
             </div>
+        </div>
+    </section>
 
-            <p class="exit-polls-subtitle">Mega Opinion Poll – All Agencies Predictions</p>
+    <!-- Parties Section -->
+    <section class="parties-section">
+        <div class="section-title" data-aos="fade-up">
+            <h2>Political Parties Performance</h2>
+        </div>
+        
+        <div class="parties-grid" id="parties-container">
+            <!-- Parties will be dynamically added here -->
+        </div>
+    </section>
 
-            <table class="exit-polls-table">
-                <thead>
-                    <tr>
-                        <th>Agency</th>
-                        <th>NDA</th>
-                        <th>MGB</th>
-                        <th>OTH</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="agency-name">MATRIZE-IANS</td>
-                        <td class="seat-range nda-seats">153–164</td>
-                        <td class="seat-range mgb-seats">76–87</td>
-                        <td class="seat-range oth-seats">00–07</td>
-                    </tr>
-                    <tr>
-                        <td class="agency-name">Chanakya Strategies</td>
-                        <td class="seat-range nda-seats">128–134</td>
-                        <td class="seat-range mgb-seats">102–108</td>
-                        <td class="seat-range oth-seats">05–09</td>
-                    </tr>
-                    <tr>
-                        <td class="agency-name">Polstrat & People's Insight</td>
-                        <td class="seat-range nda-seats">133–143</td>
-                        <td class="seat-range mgb-seats">93–102</td>
-                        <td class="seat-range oth-seats">02–09</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="exit-polls-footer">Total Seats – 243</div>
-        </section>
-
-        <!-- Results Section -->
-        <section class="results-section" data-aos="zoom-in">
-            <h2 class="section-title">Live Results</h2>
-            <div class="results-container">
-                <div class="result-item">
-                    <div class="party-color color-nda"></div>
-                    <div class="party-info">
-                        <div class="party-name">NDA (National Democratic Alliance)</div>
-                        <div class="vote-count" id="ndaCount">0</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill fill-nda" id="ndaProgress" style="width: 0%"></div>
-                        </div>
-                        <div class="percentage" id="ndaPercentage">0%</div>
-                    </div>
-                </div>
-
-                <div class="result-item">
-                    <div class="party-color color-rjd"></div>
-                    <div class="party-info">
-                        <div class="party-name">RJD (Rashtriya Janata Dal)</div>
-                        <div class="vote-count" id="rjdCount">0</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill fill-rjd" id="rjdProgress" style="width: 0%"></div>
-                        </div>
-                        <div class="percentage" id="rjdPercentage">0%</div>
-                    </div>
-                </div>
-
-                <div class="result-item">
-                    <div class="party-color color-jsp"></div>
-                    <div class="party-info">
-                        <div class="party-name">Jan Suraaj Party</div>
-                        <div class="vote-count" id="jspCount">0</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill fill-jsp" id="jspProgress" style="width: 0%"></div>
-                        </div>
-                        <div class="percentage" id="jspPercentage">0%</div>
-                    </div>
-                </div>
+    <!-- Dashboard Section -->
+    <section class="dashboard-section">
+        <div class="section-title" data-aos="fade-up">
+            <h2>Live Results Dashboard</h2>
+        </div>
+        
+        <div class="dashboard-container">
+            <div class="chart-container" data-aos="fade-right">
+                <h3 class="chart-title">Seat Share</h3>
+                <canvas id="seatChart"></canvas>
             </div>
-        </section>
-    </div>
+            <div class="chart-container" data-aos="fade-left">
+                <h3 class="chart-title">Vote Share %</h3>
+                <canvas id="voteChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="majority-mark" data-aos="zoom-in">
+            <h3>Majority Mark: 122 Seats</h3>
+            <p>The party/alliance needs 122 seats to form the government in Bihar</p>
+        </div>
+    </section>
+
+    <!-- Constituencies Section -->
+    <section class="constituencies-section">
+        <div class="section-title" data-aos="fade-up">
+            <h2>Assembly Constituencies</h2>
+        </div>
+        
+        <div class="search-container" data-aos="fade-up">
+            <input type="text" class="search-input" placeholder="Search constituency...">
+        </div>
+        
+        <div class="constituencies-grid" id="constituencies-container">
+            <!-- Constituencies will be dynamically added here -->
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer data-aos="fade-up">
+    <footer>
         <div class="footer-content">
-            <i class="fas fa-flag flag-icon"></i>
-            <p>© 2025 Election Commission of India</p>
-            <p>This is the official online voting portal for Bihar State Elections 2025.</p>
-            <div class="developer-credit">Website developed by Murli Kumar</div>
+            <div class="footer-about">
+                <div class="footer-logo">
+                    <div class="logo">
+                        <i class="fas fa-vote-yea"></i>
+                    </div>
+                    <div class="footer-logo-text">
+                        <h3>Election Commission of India</h3>
+                        <p>Bihar Assembly Results 2025</p>
+                    </div>
+                </div>
+                <p>The Election Commission of India is an autonomous constitutional authority responsible for administering election processes in India.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Results</a></li>
+                    <li><a href="#">Parties</a></li>
+                    <li><a href="#">Constituencies</a></li>
+                    <li><a href="#">Statistics</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">Election Schedule</a></li>
+                    <li><a href="#">Voter Information</a></li>
+                    <li><a href="#">Candidate List</a></li>
+                    <li><a href="#">Press Releases</a></li>
+                    <li><a href="#">Contact ECI</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Terms of Use</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Accessibility</a></li>
+                    <li><a href="#">Copyright Policy</a></li>
+                    <li><a href="#">Disclaimer</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2025 Election Commission of India. All Rights Reserved.</p>
+            <p class="developer-credit">Website Developed by Murli Kumar</p>
         </div>
     </footer>
 
-    <!-- Vote Confirmation Modal -->
-    <div class="overlay" id="overlay"></div>
-    <div class="modal" id="voteConfirmationModal">
-        <div class="modal-header">
-            <div class="modal-title">Confirm Your Vote</div>
-            <button class="close-modal" onclick="closeModal('voteConfirmationModal')">&times;</button>
-        </div>
-        <div class="confirmation-text">You are about to vote for:</div>
-        <div class="party-btn" id="confirmPartyBtn" style="width: 100%; margin: 1rem 0; pointer-events: none;">
-            <i class="fas fa-question"></i>
-            <span id="confirmPartyName">Party Name</span>
-        </div>
-        <p style="text-align: center; margin-bottom: 1rem;">Please confirm your selection. This action cannot be changed.</p>
-        <button class="download-btn" onclick="confirmVote()">Confirm Vote</button>
-    </div>
-
-    <!-- Vote Success Modal -->
-    <div class="modal" id="voteSuccessModal">
-        <div class="modal-header">
-            <div class="modal-title">Vote Successfully Cast</div>
-            <button class="close-modal" onclick="closeModal('voteSuccessModal')">&times;</button>
-        </div>
-        <div class="confirmation-icon">
-            <i class="fas fa-check-circle"></i>
-        </div>
-        <div class="confirmation-text">Your vote has been successfully recorded!</div>
-
-        <div class="receipt">
-            <div class="receipt-title">Voting Receipt</div>
-            <div class="receipt-details">
-                <div class="receipt-label">Voted For:</div>
-                <div id="receiptParty">-</div>
-
-                <div class="receipt-label">Vote ID:</div>
-                <div id="receiptVoteId">-</div>
-
-                <div class="receipt-label">Time:</div>
-                <div id="receiptTime">-</div>
-            </div>
-        </div>
-
-        <button class="download-btn" onclick="downloadReceipt()">
-            <i class="fas fa-download"></i> Download Receipt
-        </button>
-    </div>
-
-    <!-- Error Modal -->
-    <div class="modal error-modal" id="errorModal">
-        <div class="modal-header">
-            <div class="modal-title">Voting Error</div>
-            <button class="close-modal" onclick="closeModal('errorModal')">&times;</button>
-        </div>
-        <div class="error-icon">
-            <i class="fas fa-exclamation-triangle"></i>
-        </div>
-        <div class="error-text">You have already voted from this device</div>
-
-        <div class="error-details">
-            <div class="error-details-title">
-                <i class="fas fa-info-circle"></i> Important Information
-            </div>
-            <ul class="error-details-list">
-                <li>Each device can only cast one vote to ensure election integrity</li>
-                <li>Your previous vote has been recorded and counted</li>
-                <li>If you believe this is an error, please contact election officials</li>
-            </ul>
-        </div>
-
-        <button class="error-btn" onclick="closeModal('errorModal')">
-            <i class="fas fa-times"></i> Close
-        </button>
-    </div>
-
-    <!-- AOS JS -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <!-- html2canvas for receipt download -->
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-
-    <!-- Firebase SDK -->
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-analytics.js";
-        import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, query, where, getDocs, onSnapshot, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
-
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBz8ubIcaL9J0MmpnXI4LtuOmyj_WP-lkM",
-            authDomain: "physicswallah-cae32.firebaseapp.com",
-            projectId: "physicswallah-cae32",
-            storageBucket: "physicswallah-cae32.firebasestorage.app",
-            messagingSenderId: "111403656423",
-            appId: "1:111403656423:web:23eec49803da0884b62e42",
-            measurementId: "G-8NEW1K38WT"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const db = getFirestore(app);
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
         // Initialize AOS
         AOS.init({
-            duration: 800,
+            duration: 1000,
             once: true,
             offset: 100
         });
 
-        // Global variables
-        let selectedParty = '';
-        let currentVoter = {};
+        // Loading screen
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loading').style.display = 'none';
+            }, 1500);
+        });
 
-        // Firebase connection status
-        enableIndexedDbPersistence(db)
-            .then(() => {
-                console.log("Firebase persistence enabled");
-                updateConnectionStatus(true);
-            })
-            .catch((err) => {
-                console.log("Firebase persistence failed: ", err);
-                updateConnectionStatus(false);
-            });
-
-        // Update connection status
-        function updateConnectionStatus(connected) {
-            const statusElement = document.getElementById('connectionStatus');
-            if (connected) {
-                statusElement.className = 'connection-status status-connected';
-                statusElement.innerHTML = '<i class="fas fa-circle"></i> Connected to Database';
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
             } else {
-                statusElement.className = 'connection-status status-disconnected';
-                statusElement.innerHTML = '<i class="fas fa-circle"></i> Offline Mode';
+                localStorage.setItem('theme', 'light');
             }
+        });
+
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
         }
 
-        // Initialize vote counts in Firestore if not present
-        async function initializeVotes() {
-            const votesRef = doc(db, 'election', 'votes');
+        // Countdown Timer
+        function updateCountdown() {
+            const targetDate = new Date('November 14, 2025 08:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = targetDate - now;
 
-            try {
-                const docSnap = await getDoc(votesRef);
-                if (!docSnap.exists()) {
-                    // Initialize vote counts
-                    await setDoc(votesRef, {
-                        nda: 0,
-                        rjd: 0,
-                        jsp: 0,
-                        totalVoters: 0,
-                        lastUpdated: new Date()
-                    });
-                }
-
-                // Set up real-time listener for vote updates
-                onSnapshot(votesRef, (doc) => {
-                    if (doc.exists()) {
-                        const data = doc.data();
-                        updateResults(data.nda, data.rjd, data.jsp);
-                        updateStats(data.totalVoters);
-                    }
-                });
-            } catch (error) {
-                console.error("Error initializing votes: ", error);
-            }
-
-            updateExitPolls();
-        }
-
-        // Update exit polls data
-        function updateExitPolls() {
-            // This would typically fetch from Firestore, but we'll use static data for demo
-            console.log("Exit polls data loaded");
-        }
-
-        // Start the voting process
-        function startVotingProcess(party) {
-            // Check if device has already voted
-            if (localStorage.getItem('hasVoted')) {
-                showErrorModal();
+            if (distance <= 0) {
+                document.getElementById('popup-modal').style.display = 'none';
                 return;
             }
 
-            selectedParty = party;
-            
-            // Show vote confirmation
-            document.getElementById('confirmPartyName').textContent = getPartyFullName(selectedParty);
-            document.getElementById('confirmPartyBtn').className = `party-btn btn-${selectedParty}`;
-            document.getElementById('confirmPartyBtn').querySelector('i').className = getPartyIcon(selectedParty);
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            openModal('voteConfirmationModal');
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
         }
 
-        // Show error modal for already voted
-        function showErrorModal() {
-            openModal('errorModal');
-        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
 
-        // Open modal
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-        }
-
-        // Close modal
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-        }
-
-        // Confirm the vote
-        async function confirmVote() {
-            // Generate vote ID and timestamp
-            const voteId = 'V' + Date.now().toString().slice(-8);
-            const voteTime = new Date().toLocaleString();
-
-            // Update receipt
-            document.getElementById('receiptParty').textContent = getPartyFullName(selectedParty);
-            document.getElementById('receiptVoteId').textContent = voteId;
-            document.getElementById('receiptTime').textContent = voteTime;
-
-            // Store receipt data for download
-            currentVoter = {
-                voteId: voteId,
-                time: voteTime,
-                party: selectedParty
-            };
-
-            try {
-                // Save vote to Firestore
-                const votesRef = doc(db, 'election', 'votes');
-
-                // Get current vote counts
-                const docSnap = await getDoc(votesRef);
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    const updateData = {
-                        lastUpdated: new Date()
-                    };
-
-                    // Increment the selected party's votes
-                    updateData[selectedParty] = (data[selectedParty] || 0) + 1;
-                    updateData.totalVoters = (data.totalVoters || 0) + 1;
-
-                    // Update votes
-                    await updateDoc(votesRef, updateData);
-
-                    // Mark device as voted
-                    localStorage.setItem('hasVoted', 'true');
-
-                    closeModal('voteConfirmationModal');
-                    openModal('voteSuccessModal');
-                }
-            } catch (error) {
-                console.error("Error saving vote: ", error);
-                alert('Error saving your vote. Please try again.');
-            }
-        }
-
-        // Download receipt as image
-        function downloadReceipt() {
-            const receiptElement = document.querySelector('.receipt');
-
-            html2canvas(receiptElement).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `vote_receipt_${currentVoter.voteId}.png`;
-                link.href = canvas.toDataURL();
-                link.click();
-            });
-        }
-
-        // Update results display
-        function updateResults(ndaVotes, rjdVotes, jspVotes) {
-            // Calculate total votes
-            let totalVotes = ndaVotes + rjdVotes + jspVotes;
-
-            // Calculate percentages
-            let ndaPercentage = totalVotes > 0 ? (ndaVotes / totalVotes * 100).toFixed(1) : 0;
-            let rjdPercentage = totalVotes > 0 ? (rjdVotes / totalVotes * 100).toFixed(1) : 0;
-            let jspPercentage = totalVotes > 0 ? (jspVotes / totalVotes * 100).toFixed(1) : 0;
-
-            // Update vote counts
-            document.getElementById('ndaCount').textContent = ndaVotes;
-            document.getElementById('rjdCount').textContent = rjdVotes;
-            document.getElementById('jspCount').textContent = jspVotes;
-
-            // Update progress bars with animation
-            setTimeout(() => {
-                document.getElementById('ndaProgress').style.width = ndaPercentage + '%';
-                document.getElementById('rjdProgress').style.width = rjdPercentage + '%';
-                document.getElementById('jspProgress').style.width = jspPercentage + '%';
-            }, 100);
-
-            // Update percentages
-            document.getElementById('ndaPercentage').textContent = ndaPercentage + '%';
-            document.getElementById('rjdPercentage').textContent = rjdPercentage + '%';
-            document.getElementById('jspPercentage').textContent = jspPercentage + '%';
-
-            // Update leading party banner
-            updateLeadingParty(ndaVotes, rjdVotes, jspVotes);
-        }
-
-        // Update statistics
-        function updateStats(totalVoters) {
-            // For demo purposes, we'll set a fixed number of registered voters
-            const registeredVoters = 10000;
-            const turnoutPercentage = ((totalVoters / registeredVoters) * 100).toFixed(1);
-
-            document.getElementById('totalVoters').textContent = registeredVoters.toLocaleString();
-            document.getElementById('votesCast').textContent = totalVoters.toLocaleString();
-            document.getElementById('turnoutPercentage').textContent = turnoutPercentage + '%';
-        }
-
-        // Update leading party banner
-        function updateLeadingParty(nda, rjd, jsp) {
-            const banner = document.getElementById('leadingBanner');
-            const leadingPartyName = document.getElementById('leadingPartyName');
-
-            if (nda > rjd && nda > jsp) {
-                leadingPartyName.textContent = 'NDA';
-                banner.style.display = 'block';
-            } else if (rjd > nda && rjd > jsp) {
-                leadingPartyName.textContent = 'RJD';
-                banner.style.display = 'block';
-            } else if (jsp > nda && jsp > rjd) {
-                leadingPartyName.textContent = 'Jan Sauraj Party';
-                banner.style.display = 'block';
+        // Share Button
+        document.getElementById('share-btn').addEventListener('click', function() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Election Commission - Bihar Results 2025',
+                    text: 'Check out the Bihar Legislative Assembly Election Results 2025',
+                    url: window.location.href
+                })
+                .catch(error => console.log('Error sharing:', error));
             } else {
-                banner.style.display = 'none';
+                // Fallback for browsers that don't support Web Share API
+                alert('Share this page: ' + window.location.href);
             }
-        }
+        });
 
-        // Helper function to get party full name
-        function getPartyFullName(partyCode) {
-            switch(partyCode) {
-                case 'nda': return 'NDA (National Democratic Alliance)';
-                case 'rjd': return 'RJD (Rashtriya Janata Dal)';
-                case 'jsp': return 'Jan Suraaj Party';
-                default: return 'Unknown Party';
+        // Parties Data
+        const parties = [
+            { name: 'JDU', fullName: 'Janata Dal (United)', color: '#008000', seatsWon: 45, seatsLeading: 12, trend: 'up' },
+            { name: 'RJD', fullName: 'Rashtriya Janata Dal', color: '#0080C0', seatsWon: 38, seatsLeading: 15, trend: 'up' },
+            { name: 'BJP', fullName: 'Bharatiya Janata Party', color: '#FF9933', seatsWon: 42, seatsLeading: 8, trend: 'down' },
+            { name: 'INC', fullName: 'Indian National Congress', color: '#00A0E0', seatsWon: 18, seatsLeading: 5, trend: 'up' },
+            { name: 'LJP', fullName: 'Lok Janshakti Party', color: '#004B87', seatsWon: 5, seatsLeading: 3, trend: 'down' },
+            { name: 'HAM', fullName: 'Hindustani Awam Morcha', color: '#800080', seatsWon: 3, seatsLeading: 2, trend: 'stable' },
+            { name: 'CPI(ML)', fullName: 'Communist Party of India (Marxist–Leninist)', color: '#FF0000', seatsWon: 7, seatsLeading: 4, trend: 'up' },
+            { name: 'AIMIM', fullName: 'All India Majlis-e-Ittehadul Muslimeen', color: '#006600', seatsWon: 2, seatsLeading: 1, trend: 'stable' },
+            { name: 'VIP', fullName: 'Vikassheel Insaan Party', color: '#FF6600', seatsWon: 4, seatsLeading: 2, trend: 'down' },
+            { name: 'RLSP', fullName: 'Rashtriya Lok Samta Party', color: '#663300', seatsWon: 1, seatsLeading: 1, trend: 'stable' },
+            { name: 'IND', fullName: 'Independents', color: '#808080', seatsWon: 8, seatsLeading: 5, trend: 'up' }
+        ];
+
+        // Render Parties
+        const partiesContainer = document.getElementById('parties-container');
+        parties.forEach((party, index) => {
+            const partyCard = document.createElement('div');
+            partyCard.className = 'party-card';
+            partyCard.setAttribute('data-aos', 'fade-up');
+            partyCard.setAttribute('data-aos-delay', (index * 100).toString());
+            
+            const trendIcon = party.trend === 'up' ? 'fa-arrow-up' : 
+                             party.trend === 'down' ? 'fa-arrow-down' : 'fa-minus';
+            
+            partyCard.innerHTML = `
+                <div class="party-header">
+                    <div class="party-logo" style="background-color: ${party.color}">
+                        ${party.name.substring(0, 2)}
+                    </div>
+                    <div class="party-info">
+                        <h3>${party.name}</h3>
+                        <p>${party.fullName}</p>
+                    </div>
+                </div>
+                <div class="party-stats">
+                    <div class="stat">
+                        <div class="stat-value">${party.seatsWon}</div>
+                        <div class="stat-label">Seats Won</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">${party.seatsLeading}</div>
+                        <div class="stat-label">Seats Leading</div>
+                    </div>
+                </div>
+                <div class="trend ${party.trend}">
+                    <i class="fas ${trendIcon}"></i>
+                    <span>${party.trend === 'up' ? 'Gaining' : party.trend === 'down' ? 'Losing' : 'Stable'}</span>
+                </div>
+            `;
+            
+            partiesContainer.appendChild(partyCard);
+        });
+
+        // Charts
+        const seatCtx = document.getElementById('seatChart').getContext('2d');
+        const voteCtx = document.getElementById('voteChart').getContext('2d');
+
+        const seatChart = new Chart(seatCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['JDU', 'RJD', 'BJP', 'INC', 'Others'],
+                datasets: [{
+                    data: [45, 38, 42, 18, 25],
+                    backgroundColor: [
+                        '#008000',
+                        '#0080C0',
+                        '#FF9933',
+                        '#00A0E0',
+                        '#808080'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
             }
-        }
+        });
 
-        // Helper function to get party icon
-        function getPartyIcon(partyCode) {
-            switch(partyCode) {
-                case 'nda': return 'fas fa-lotus';
-                case 'rjd': return 'fas fa-handshake';
-                case 'jsp': return 'fas fa-star';
-                default: return 'fas fa-question';
+        const voteChart = new Chart(voteCtx, {
+            type: 'bar',
+            data: {
+                labels: ['JDU', 'RJD', 'BJP', 'INC', 'Others'],
+                datasets: [{
+                    label: 'Vote Share %',
+                    data: [22, 19, 24, 11, 24],
+                    backgroundColor: [
+                        '#008000',
+                        '#0080C0',
+                        '#FF9933',
+                        '#00A0E0',
+                        '#808080'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 30,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                },
+                animation: {
+                    duration: 2000,
+                    easing: 'easeOutQuart'
+                }
             }
-        }
+        });
 
-        // Make functions globally available
-        window.startVotingProcess = startVotingProcess;
-        window.closeModal = closeModal;
-        window.confirmVote = confirmVote;
-        window.downloadReceipt = downloadReceipt;
-        window.showErrorModal = showErrorModal;
+        // Constituencies Data
+        const constituencies = [
+            { name: 'Patna Sahib', candidate: 'Ramesh Kumar', party: 'BJP', status: 'won', votes: 85214 },
+            { name: 'Hajipur', candidate: 'Rajesh Singh', party: 'LJP', status: 'leading', votes: 72145 },
+            { name: 'Nalanda', candidate: 'Vikash Yadav', party: 'JDU', status: 'won', votes: 78321 },
+            { name: 'Madhubani', candidate: 'Sunita Devi', party: 'RJD', status: 'leading', votes: 69452 },
+            { name: 'Gaya Town', candidate: 'Amit Sharma', party: 'BJP', status: 'won', votes: 81234 },
+            { name: 'Bhagalpur', candidate: 'Sanjay Prasad', party: 'INC', status: 'leading', votes: 65432 },
+            { name: 'Muzaffarpur', candidate: 'Anil Kumar', party: 'JDU', status: 'won', votes: 72345 },
+            { name: 'Purnia', candidate: 'Rahul Verma', party: 'RJD', status: 'leading', votes: 69876 }
+        ];
 
-        // Initialize the app when page loads
-        window.addEventListener('DOMContentLoaded', initializeVotes);
+        // Render Constituencies
+        const constituenciesContainer = document.getElementById('constituencies-container');
+        constituencies.forEach((constituency, index) => {
+            const constituencyCard = document.createElement('div');
+            constituencyCard.className = 'constituency-card';
+            constituencyCard.setAttribute('data-aos', 'fade-up');
+            constituencyCard.setAttribute('data-aos-delay', (index * 100).toString());
+            
+            const partyColor = parties.find(p => p.name === constituency.party)?.color || '#808080';
+            
+            constituencyCard.innerHTML = `
+                <div class="constituency-header">
+                    <div class="constituency-name">${constituency.name}</div>
+                    <div class="status ${constituency.status}">${constituency.status === 'won' ? 'Won' : 'Leading'}</div>
+                </div>
+                <div class="constituency-body">
+                    <div class="candidate-info">
+                        <div class="candidate-photo" style="background-color: ${partyColor}">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="candidate-details">
+                            <h4>${constituency.candidate}</h4>
+                            <p>${constituency.party}</p>
+                        </div>
+                    </div>
+                    <div class="votes">
+                        <strong>Votes:</strong> ${constituency.votes.toLocaleString()}
+                    </div>
+                </div>
+            `;
+            
+            constituenciesContainer.appendChild(constituencyCard);
+        });
+
+        // Search Functionality
+        const searchInput = document.querySelector('.search-input');
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const cards = document.querySelectorAll('.constituency-card');
+            
+            cards.forEach(card => {
+                const name = card.querySelector('.constituency-name').textContent.toLowerCase();
+                if (name.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Security - Disable right click
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // Security - Disable keyboard shortcuts for dev tools
+        document.addEventListener('keydown', function(e) {
+            if (e.keyCode === 123 || 
+                (e.ctrlKey && e.shiftKey && e.keyCode === 73) || 
+                (e.ctrlKey && e.keyCode === 85)) {
+                e.preventDefault();
+                return false;
+            }
+        });
     </script>
 </body>
 </html>
