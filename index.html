@@ -3,7 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Election Commission - Government of India | Bihar Assembly Results 2025</title>
+    <title>Election Commission – Government of India | Bihar Assembly Election Results 2025</title>
+    <meta name="description" content="Official Bihar Legislative Assembly Election Results 2025 - Live counting trends and results for all 243 constituencies from Election Commission of India">
+    <meta name="keywords" content="Bihar Election Results 2025, Election Commission of India, Bihar Assembly Elections, Live Results, ECI, Bihar Votes">
+    <meta name="author" content="Election Commission of India">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://eci.gov.in/bihar-results-2025/">
+    <meta property="og:title" content="Election Commission – Government of India | Bihar Assembly Election Results 2025">
+    <meta property="og:description" content="Official Bihar Legislative Assembly Election Results 2025 - Live counting trends and results for all 243 constituencies">
+    <meta property="og:image" content="https://eci.gov.in/images/bihar-election-2025-og.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://eci.gov.in/bihar-results-2025/">
+    <meta property="twitter:title" content="Election Commission – Government of India | Bihar Assembly Election Results 2025">
+    <meta property="twitter:description" content="Official Bihar Legislative Assembly Election Results 2025 - Live counting trends and results for all 243 constituencies">
+    <meta property="twitter:image" content="https://eci.gov.in/images/bihar-election-2025-og.jpg">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Election",
+      "name": "Bihar Legislative Assembly Election 2025",
+      "description": "Official results for Bihar Legislative Assembly Election 2025",
+      "startDate": "2025-11-14",
+      "endDate": "2025-11-14",
+      "location": {
+        "@type": "Place",
+        "name": "Bihar, India"
+      },
+      "organizer": {
+        "@type": "GovernmentOrganization",
+        "name": "Election Commission of India",
+        "url": "https://eci.gov.in"
+      }
+    }
+    </script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Hind+Siliguri:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
@@ -21,6 +64,7 @@
             --text: #222;
             --light-text: #666;
             --shadow: rgba(0, 0, 0, 0.1);
+            --lavender: #e6e6fa;
         }
 
         .dark-mode {
@@ -35,6 +79,7 @@
             --text: #f0f0f0;
             --light-text: #aaa;
             --shadow: rgba(255, 255, 255, 0.05);
+            --lavender: #2a2a3a;
         }
 
         * {
@@ -51,140 +96,49 @@
             overflow-x: hidden;
         }
 
-        /* Loading Spinner */
-        #loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--white);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
-        .spinner {
-            width: 70px;
-            height: 70px;
-            border: 5px solid rgba(255, 153, 51, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--saffron);
-            border-right-color: var(--green);
-            border-bottom-color: var(--blue);
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Popup Modal */
-        #popup-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(5px);
-        }
-
-        .popup-content {
-            background: var(--white);
-            width: 90%;
-            max-width: 600px;
-            border-radius: 12px;
+        /* Announcement Bar */
+        #announcement-bar {
+            background: linear-gradient(90deg, #e53935, #d81b60);
+            color: white;
+            padding: 12px 0;
+            text-align: center;
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            position: relative;
-            border: 3px solid transparent;
-            background-clip: padding-box;
-            animation: popIn 0.5s ease-out;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
-        .popup-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            z-index: -1;
-            margin: -3px;
-            border-radius: inherit;
-            background: linear-gradient(45deg, var(--saffron), var(--white), var(--green));
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .popup-header {
-            background: var(--blue);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            position: relative;
-        }
-
-        .popup-header h2 {
-            font-family: 'Hind Siliguri', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-
-        .popup-body {
-            padding: 30px;
-            text-align: center;
-        }
-
-        .countdown {
+        .announcement-content {
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .countdown-item {
-            display: flex;
-            flex-direction: column;
             align-items: center;
-        }
-
-        .countdown-number {
-            font-size: 2rem;
-            font-weight: 700;
-            background: var(--blue);
-            color: white;
-            width: 60px;
-            height: 60px;
-            display: flex;
             justify-content: center;
-            align-items: center;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px var(--shadow);
+            gap: 10px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
-        .countdown-label {
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
             font-size: 0.8rem;
-            margin-top: 5px;
-            color: var(--light-text);
+            font-weight: 600;
         }
 
-        .popup-footer {
-            padding: 15px;
-            text-align: center;
-            background: var(--gray);
-            font-size: 0.9rem;
-            color: var(--light-text);
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
         /* Header & Navigation */
@@ -301,11 +255,28 @@
             background: var(--light-blue);
         }
 
+        .admin-btn {
+            background: var(--saffron);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .admin-btn:hover {
+            background: #e68900;
+        }
+
         /* Hero Section */
         .hero {
             background: linear-gradient(135deg, var(--blue) 0%, var(--light-blue) 100%);
             color: white;
-            padding: 60px 5%;
+            padding: 40px 5%;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -322,13 +293,13 @@
         }
 
         .hero h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin-bottom: 15px;
             position: relative;
         }
 
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             max-width: 700px;
             margin: 0 auto 30px;
             position: relative;
@@ -339,7 +310,7 @@
             justify-content: center;
             flex-wrap: wrap;
             gap: 20px;
-            margin-top: 40px;
+            margin-top: 30px;
             position: relative;
         }
 
@@ -365,18 +336,18 @@
 
         /* Parties Section */
         .parties-section {
-            padding: 80px 5%;
+            padding: 60px 5%;
             background: var(--gray);
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             position: relative;
         }
 
         .section-title h2 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: var(--blue);
             display: inline-block;
             padding-bottom: 10px;
@@ -483,7 +454,7 @@
 
         /* Dashboard Section */
         .dashboard-section {
-            padding: 80px 5%;
+            padding: 60px 5%;
         }
 
         .dashboard-container {
@@ -521,116 +492,190 @@
             margin-bottom: 10px;
         }
 
-        /* Constituencies Section */
-        .constituencies-section {
-            padding: 80px 5%;
-            background: var(--gray);
-        }
-
-        .search-container {
-            max-width: 500px;
-            margin: 0 auto 40px;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 15px 20px;
-            border-radius: 50px;
-            border: 1px solid var(--shadow);
+        /* Admin Panel */
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
             background: var(--white);
-            font-size: 1rem;
-            box-shadow: 0 3px 10px var(--shadow);
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            padding: 20px;
         }
 
-        .search-input:focus {
+        .admin-panel.active {
+            right: 0;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .admin-header h2 {
+            color: var(--blue);
+        }
+
+        .close-admin {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--light-text);
+        }
+
+        .admin-section {
+            margin-bottom: 25px;
+        }
+
+        .admin-section h3 {
+            margin-bottom: 15px;
+            color: var(--blue);
+            font-size: 1.2rem;
+        }
+
+        .admin-form-group {
+            margin-bottom: 15px;
+        }
+
+        .admin-form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .admin-form-group input,
+        .admin-form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: var(--white);
+            color: var(--text);
+        }
+
+        .admin-form-group input:focus,
+        .admin-form-group select:focus {
             outline: none;
             border-color: var(--blue);
         }
 
-        .constituencies-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .constituency-card {
-            background: var(--white);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px var(--shadow);
-            transition: transform 0.3s;
-        }
-
-        .constituency-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .constituency-header {
-            padding: 15px;
+        .admin-actions {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--gray);
+            gap: 10px;
+            margin-top: 20px;
         }
 
-        .constituency-name {
-            font-weight: 600;
-            color: var(--blue);
+        .admin-btn-primary {
+            background: var(--blue);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            flex: 1;
         }
 
-        .status {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .status.leading {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-
-        .status.won {
-            background: #e8f5e9;
-            color: #388e3c;
-        }
-
-        .constituency-body {
-            padding: 15px;
-        }
-
-        .candidate-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .candidate-photo {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        .admin-btn-secondary {
             background: var(--gray);
+            color: var(--text);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .admin-btn-danger {
+            background: #e53935;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .admin-login {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
             display: flex;
             justify-content: center;
             align-items: center;
-            color: var(--light-text);
-            font-size: 1.5rem;
+            z-index: 1001;
         }
 
-        .candidate-details h4 {
-            font-size: 1.1rem;
-            margin-bottom: 5px;
+        .admin-login.hidden {
+            display: none;
         }
 
-        .candidate-details p {
-            font-size: 0.9rem;
-            color: var(--light-text);
+        .login-form {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            width: 400px;
+            max-width: 90%;
         }
 
-        .votes {
+        .login-form h2 {
+            margin-bottom: 20px;
+            color: var(--blue);
+            text-align: center;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: var(--white);
+            color: var(--text);
+        }
+
+        .login-form button {
+            width: 100%;
+            padding: 12px;
+            background: var(--blue);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .login-error {
+            color: #e53935;
+            text-align: center;
             margin-top: 10px;
             font-size: 0.9rem;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         /* Footer */
@@ -758,11 +803,15 @@
             }
             
             .hero h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             
             .parties-grid {
                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .admin-panel {
+                width: 350px;
             }
         }
 
@@ -777,7 +826,7 @@
             }
             
             .hero h1 {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
             
             .hero p {
@@ -792,6 +841,10 @@
             .section-title h2 {
                 font-size: 1.5rem;
             }
+            
+            .admin-panel {
+                width: 100%;
+            }
         }
 
         @media (max-width: 576px) {
@@ -799,63 +852,21 @@
                 grid-template-columns: 1fr;
             }
             
-            .constituencies-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .countdown {
-                gap: 10px;
-            }
-            
-            .countdown-number {
-                width: 50px;
-                height: 50px;
-                font-size: 1.5rem;
+            .admin-panel {
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loading">
-        <div class="spinner"></div>
-        <p style="margin-top: 20px;">Loading Election Commission Portal...</p>
-    </div>
-
-    <!-- Popup Modal -->
-    <div id="popup-modal">
-        <div class="popup-content">
-            <div class="popup-header">
-                <h2>Election Commission of India</h2>
-                <p>Bihar Legislative Assembly Elections 2025</p>
+    <!-- Announcement Bar -->
+    <div id="announcement-bar">
+        <div class="announcement-content">
+            <div class="live-indicator">
+                <div class="live-dot"></div>
+                <span>LIVE</span>
             </div>
-            <div class="popup-body">
-                <p>General Election to Assembly Constituencies: Trends & Results November-2025</p>
-                <p>Results trends will start from 8:00 AM on 14th November-2025</p>
-                <p>Bihar – Total Assembly Constituencies: 243</p>
-                
-                <div class="countdown">
-                    <div class="countdown-item">
-                        <div class="countdown-number" id="days">00</div>
-                        <div class="countdown-label">Days</div>
-                    </div>
-                    <div class="countdown-item">
-                        <div class="countdown-number" id="hours">00</div>
-                        <div class="countdown-label">Hours</div>
-                    </div>
-                    <div class="countdown-item">
-                        <div class="countdown-number" id="minutes">00</div>
-                        <div class="countdown-label">Minutes</div>
-                    </div>
-                    <div class="countdown-item">
-                        <div class="countdown-number" id="seconds">00</div>
-                        <div class="countdown-label">Seconds</div>
-                    </div>
-                </div>
-            </div>
-            <div class="popup-footer">
-                <p>Official Website of Election Commission of India</p>
-            </div>
+            <div id="announcement-text">LIVE: Counting underway across Bihar. Updates refreshing every second.</div>
         </div>
     </div>
 
@@ -880,6 +891,9 @@
                 <button class="share-btn" id="share-btn">
                     <i class="fas fa-share-alt"></i> Share
                 </button>
+                <button class="admin-btn" id="admin-btn">
+                    <i class="fas fa-cog"></i> Admin
+                </button>
             </div>
         </div>
     </header>
@@ -895,7 +909,7 @@
                 <div class="stat-label">Total Constituencies</div>
             </div>
             <div class="stat-card" data-aos="fade-up" data-aos-delay="400">
-                <div class="stat-number">126</div>
+                <div class="stat-number">122</div>
                 <div class="stat-label">Majority Mark</div>
             </div>
             <div class="stat-card" data-aos="fade-up" data-aos-delay="500">
@@ -917,6 +931,7 @@
         
         <div class="parties-grid" id="parties-container">
             <!-- Parties will be dynamically added here -->
+            <div class="loading-message">Loading data from database...</div>
         </div>
     </section>
 
@@ -940,21 +955,6 @@
         <div class="majority-mark" data-aos="zoom-in">
             <h3>Majority Mark: 122 Seats</h3>
             <p>The party/alliance needs 122 seats to form the government in Bihar</p>
-        </div>
-    </section>
-
-    <!-- Constituencies Section -->
-    <section class="constituencies-section">
-        <div class="section-title" data-aos="fade-up">
-            <h2>Assembly Constituencies</h2>
-        </div>
-        
-        <div class="search-container" data-aos="fade-up">
-            <input type="text" class="search-input" placeholder="Search constituency...">
-        </div>
-        
-        <div class="constituencies-grid" id="constituencies-container">
-            <!-- Constituencies will be dynamically added here -->
         </div>
     </section>
 
@@ -986,7 +986,6 @@
                     <li><a href="#">Home</a></li>
                     <li><a href="#">Results</a></li>
                     <li><a href="#">Parties</a></li>
-                    <li><a href="#">Constituencies</a></li>
                     <li><a href="#">Statistics</a></li>
                 </ul>
             </div>
@@ -1020,20 +1019,110 @@
         </div>
     </footer>
 
+    <!-- Admin Login -->
+    <div class="admin-login hidden" id="admin-login">
+        <div class="login-form">
+            <h2>Admin Login</h2>
+            <input type="password" id="admin-password" placeholder="Enter Admin Password">
+            <button id="login-btn">Login</button>
+            <div class="login-error" id="login-error"></div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="admin-panel">
+        <div class="admin-header">
+            <h2>Admin Panel</h2>
+            <button class="close-admin" id="close-admin">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="admin-section">
+            <h3>Edit Party Data</h3>
+            <div class="admin-form-group">
+                <label for="edit-party">Select Party</label>
+                <select id="edit-party">
+                    <option value="">Select a party</option>
+                </select>
+            </div>
+            <div class="admin-form-group">
+                <label for="party-seats-won">Seats Won</label>
+                <input type="number" id="party-seats-won" min="0" max="243">
+            </div>
+            <div class="admin-form-group">
+                <label for="party-seats-leading">Seats Leading</label>
+                <input type="number" id="party-seats-leading" min="0" max="243">
+            </div>
+            <div class="admin-form-group">
+                <label for="party-trend">Trend</label>
+                <select id="party-trend">
+                    <option value="up">Up</option>
+                    <option value="down">Down</option>
+                    <option value="stable">Stable</option>
+                </select>
+            </div>
+            <div class="admin-actions">
+                <button class="admin-btn-primary" id="update-party">
+                    <span id="update-text">Update Party</span>
+                    <span class="loading hidden" id="update-loading"></span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="admin-section">
+            <h3>Add New Party</h3>
+            <div class="admin-form-group">
+                <label for="new-party-name">Party Name (Abbreviation)</label>
+                <input type="text" id="new-party-name" placeholder="e.g., BJP">
+            </div>
+            <div class="admin-form-group">
+                <label for="new-party-fullname">Full Party Name</label>
+                <input type="text" id="new-party-fullname" placeholder="e.g., Bharatiya Janata Party">
+            </div>
+            <div class="admin-form-group">
+                <label for="new-party-color">Party Color</label>
+                <input type="color" id="new-party-color" value="#3E9FDF">
+            </div>
+            <div class="admin-actions">
+                <button class="admin-btn-primary" id="add-party">
+                    <span id="add-text">Add New Party</span>
+                    <span class="loading hidden" id="add-loading"></span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="admin-section">
+            <h3>Reset Data</h3>
+            <div class="admin-actions">
+                <button class="admin-btn-secondary" id="reset-data">Reset to Default</button>
+                <button class="admin-btn-danger" id="clear-data">Clear All Data</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBz8ubIcaL9J0MmpnXI4LtuOmyj_WP-lkM",
+            authDomain: "physicswallah-cae32.firebaseapp.com",
+            projectId: "physicswallah-cae32",
+            storageBucket: "physicswallah-cae32.firebasestorage.app",
+            messagingSenderId: "111403656423",
+            appId: "1:111403656423:web:23eec49803da0884b62e42",
+            measurementId: "G-8NEW1K38WT"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
         // Initialize AOS
         AOS.init({
             duration: 1000,
             once: true,
             offset: 100
-        });
-
-        // Loading screen
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                document.getElementById('loading').style.display = 'none';
-            }, 1500);
         });
 
         // Theme Toggle
@@ -1052,31 +1141,6 @@
             document.body.classList.add('dark-mode');
         }
 
-        // Countdown Timer
-        function updateCountdown() {
-            const targetDate = new Date('November 14, 2025 08:00:00').getTime();
-            const now = new Date().getTime();
-            const distance = targetDate - now;
-
-            if (distance <= 0) {
-                document.getElementById('popup-modal').style.display = 'none';
-                return;
-            }
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById('days').textContent = days.toString().padStart(2, '0');
-            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-        }
-
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
-
         // Share Button
         document.getElementById('share-btn').addEventListener('click', function() {
             if (navigator.share) {
@@ -1092,62 +1156,148 @@
             }
         });
 
-        // Parties Data
-        const parties = [
-            { name: 'JDU', fullName: 'Janata Dal (United)', color: '#008000', seatsWon: 45, seatsLeading: 12, trend: 'up' },
-            { name: 'RJD', fullName: 'Rashtriya Janata Dal', color: '#0080C0', seatsWon: 38, seatsLeading: 15, trend: 'up' },
-            { name: 'BJP', fullName: 'Bharatiya Janata Party', color: '#FF9933', seatsWon: 42, seatsLeading: 8, trend: 'down' },
-            { name: 'INC', fullName: 'Indian National Congress', color: '#00A0E0', seatsWon: 18, seatsLeading: 5, trend: 'up' },
-            { name: 'LJP', fullName: 'Lok Janshakti Party', color: '#004B87', seatsWon: 5, seatsLeading: 3, trend: 'down' },
-            { name: 'HAM', fullName: 'Hindustani Awam Morcha', color: '#800080', seatsWon: 3, seatsLeading: 2, trend: 'stable' },
-            { name: 'CPI(ML)', fullName: 'Communist Party of India (Marxist–Leninist)', color: '#FF0000', seatsWon: 7, seatsLeading: 4, trend: 'up' },
-            { name: 'AIMIM', fullName: 'All India Majlis-e-Ittehadul Muslimeen', color: '#006600', seatsWon: 2, seatsLeading: 1, trend: 'stable' },
-            { name: 'VIP', fullName: 'Vikassheel Insaan Party', color: '#FF6600', seatsWon: 4, seatsLeading: 2, trend: 'down' },
-            { name: 'RLSP', fullName: 'Rashtriya Lok Samta Party', color: '#663300', seatsWon: 1, seatsLeading: 1, trend: 'stable' },
-            { name: 'IND', fullName: 'Independents', color: '#808080', seatsWon: 8, seatsLeading: 5, trend: 'up' }
-        ];
+        // Admin Panel Functionality
+        const adminBtn = document.getElementById('admin-btn');
+        const adminPanel = document.getElementById('admin-panel');
+        const closeAdmin = document.getElementById('close-admin');
+        const adminLogin = document.getElementById('admin-login');
+        const loginBtn = document.getElementById('login-btn');
+        const loginError = document.getElementById('login-error');
+        const adminPassword = document.getElementById('admin-password');
 
-        // Render Parties
-        const partiesContainer = document.getElementById('parties-container');
-        parties.forEach((party, index) => {
-            const partyCard = document.createElement('div');
-            partyCard.className = 'party-card';
-            partyCard.setAttribute('data-aos', 'fade-up');
-            partyCard.setAttribute('data-aos-delay', (index * 100).toString());
-            
-            const trendIcon = party.trend === 'up' ? 'fa-arrow-up' : 
-                             party.trend === 'down' ? 'fa-arrow-down' : 'fa-minus';
-            
-            partyCard.innerHTML = `
-                <div class="party-header">
-                    <div class="party-logo" style="background-color: ${party.color}">
-                        ${party.name.substring(0, 2)}
-                    </div>
-                    <div class="party-info">
-                        <h3>${party.name}</h3>
-                        <p>${party.fullName}</p>
-                    </div>
-                </div>
-                <div class="party-stats">
-                    <div class="stat">
-                        <div class="stat-value">${party.seatsWon}</div>
-                        <div class="stat-label">Seats Won</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value">${party.seatsLeading}</div>
-                        <div class="stat-label">Seats Leading</div>
-                    </div>
-                </div>
-                <div class="trend ${party.trend}">
-                    <i class="fas ${trendIcon}"></i>
-                    <span>${party.trend === 'up' ? 'Gaining' : party.trend === 'down' ? 'Losing' : 'Stable'}</span>
-                </div>
-            `;
-            
-            partiesContainer.appendChild(partyCard);
+        // Check if admin is already logged in
+        if (localStorage.getItem('adminLoggedIn') === 'true') {
+            adminPanel.classList.add('active');
+        }
+
+        adminBtn.addEventListener('click', function() {
+            if (localStorage.getItem('adminLoggedIn') === 'true') {
+                adminPanel.classList.add('active');
+            } else {
+                adminLogin.classList.remove('hidden');
+            }
         });
 
-        // Charts
+        closeAdmin.addEventListener('click', function() {
+            adminPanel.classList.remove('active');
+        });
+
+        loginBtn.addEventListener('click', function() {
+            if (adminPassword.value === 'murlikumar76@') {
+                localStorage.setItem('adminLoggedIn', 'true');
+                adminLogin.classList.add('hidden');
+                adminPanel.classList.add('active');
+                loginError.textContent = '';
+                adminPassword.value = '';
+            } else {
+                loginError.textContent = 'Incorrect password. Please try again.';
+            }
+        });
+
+        // Close admin login when clicking outside
+        adminLogin.addEventListener('click', function(e) {
+            if (e.target === adminLogin) {
+                adminLogin.classList.add('hidden');
+                loginError.textContent = '';
+                adminPassword.value = '';
+            }
+        });
+
+        // Initial Parties Data (for resetting)
+        const initialParties = [
+            { name: 'JDU', fullName: 'Janata Dal (United)', color: '#3E9FDF', seatsWon: 45, seatsLeading: 12, trend: 'up' },
+            { name: 'RJD', fullName: 'Rashtriya Janata Dal', color: '#008C45', seatsWon: 38, seatsLeading: 15, trend: 'up' },
+            { name: 'BJP', fullName: 'Bharatiya Janata Party', color: '#F08A00', seatsWon: 42, seatsLeading: 8, trend: 'down' },
+            { name: 'INC', fullName: 'Indian National Congress', color: '#1D5B9F', seatsWon: 18, seatsLeading: 5, trend: 'up' },
+            { name: 'LJP', fullName: 'Lok Janshakti Party', color: '#D91527', seatsWon: 5, seatsLeading: 3, trend: 'down' },
+            { name: 'HAM', fullName: 'Hindustani Awam Morcha', color: '#800080', seatsWon: 3, seatsLeading: 2, trend: 'stable' },
+            { name: 'CPI(ML)', fullName: 'Communist Party of India (Marxist–Leninist)', color: '#BF0000', seatsWon: 7, seatsLeading: 4, trend: 'up' },
+            { name: 'AIMIM', fullName: 'All India Majlis-e-Ittehadul Muslimeen', color: '#198754', seatsWon: 2, seatsLeading: 1, trend: 'stable' },
+            { name: 'VIP', fullName: 'Vikassheel Insaan Party', color: '#FF6600', seatsWon: 4, seatsLeading: 2, trend: 'down' },
+            { name: 'RLSP', fullName: 'Rashtriya Lok Samta Party', color: '#663300', seatsWon: 1, seatsLeading: 1, trend: 'stable' },
+            { name: 'IND', fullName: 'Independents', color: '#555555', seatsWon: 8, seatsLeading: 5, trend: 'up' }
+        ];
+
+        // Global variable to store parties data
+        let parties = [];
+
+        // Render Parties
+        function renderParties() {
+            const partiesContainer = document.getElementById('parties-container');
+            partiesContainer.innerHTML = '';
+            
+            if (parties.length === 0) {
+                partiesContainer.innerHTML = '<div class="loading-message">No data available. Please add parties in the admin panel.</div>';
+                return;
+            }
+            
+            parties.forEach((party, index) => {
+                const partyCard = document.createElement('div');
+                partyCard.className = 'party-card';
+                partyCard.setAttribute('data-aos', 'fade-up');
+                partyCard.setAttribute('data-aos-delay', (index * 100).toString());
+                
+                const trendIcon = party.trend === 'up' ? 'fa-arrow-up' : 
+                                 party.trend === 'down' ? 'fa-arrow-down' : 'fa-minus';
+                
+                partyCard.innerHTML = `
+                    <div class="party-header">
+                        <div class="party-logo" style="background-color: ${party.color}">
+                            ${party.name.substring(0, 2)}
+                        </div>
+                        <div class="party-info">
+                            <h3>${party.name}</h3>
+                            <p>${party.fullName}</p>
+                        </div>
+                    </div>
+                    <div class="party-stats">
+                        <div class="stat">
+                            <div class="stat-value">${party.seatsWon}</div>
+                            <div class="stat-label">Seats Won</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${party.seatsLeading}</div>
+                            <div class="stat-label">Seats Leading</div>
+                        </div>
+                    </div>
+                    <div class="trend ${party.trend}">
+                        <i class="fas ${trendIcon}"></i>
+                        <span>${party.trend === 'up' ? 'Gaining' : party.trend === 'down' ? 'Losing' : 'Stable'}</span>
+                    </div>
+                `;
+                
+                partiesContainer.appendChild(partyCard);
+            });
+            
+            updateCharts();
+            populatePartyDropdown();
+        }
+
+        // Update Charts
+        function updateCharts() {
+            if (parties.length === 0) return;
+            
+            // Update seat chart
+            seatChart.data.datasets[0].data = [
+                parties.find(p => p.name === 'JDU')?.seatsWon || 0,
+                parties.find(p => p.name === 'RJD')?.seatsWon || 0,
+                parties.find(p => p.name === 'BJP')?.seatsWon || 0,
+                parties.find(p => p.name === 'INC')?.seatsWon || 0,
+                parties.reduce((sum, party) => {
+                    if (!['JDU', 'RJD', 'BJP', 'INC'].includes(party.name)) {
+                        return sum + party.seatsWon;
+                    }
+                    return sum;
+                }, 0)
+            ];
+            seatChart.update();
+            
+            // Update vote chart (this would need to be calculated from actual data)
+            voteChart.data.datasets[0].data = [22, 19, 24, 11, 24];
+            voteChart.update();
+        }
+
+        // Initialize Charts
         const seatCtx = document.getElementById('seatChart').getContext('2d');
         const voteCtx = document.getElementById('voteChart').getContext('2d');
 
@@ -1158,11 +1308,11 @@
                 datasets: [{
                     data: [45, 38, 42, 18, 25],
                     backgroundColor: [
-                        '#008000',
-                        '#0080C0',
-                        '#FF9933',
-                        '#00A0E0',
-                        '#808080'
+                        '#3E9FDF',
+                        '#008C45',
+                        '#F08A00',
+                        '#1D5B9F',
+                        '#555555'
                     ],
                     borderWidth: 1
                 }]
@@ -1189,11 +1339,11 @@
                     label: 'Vote Share %',
                     data: [22, 19, 24, 11, 24],
                     backgroundColor: [
-                        '#008000',
-                        '#0080C0',
-                        '#FF9933',
-                        '#00A0E0',
-                        '#808080'
+                        '#3E9FDF',
+                        '#008C45',
+                        '#F08A00',
+                        '#1D5B9F',
+                        '#555555'
                     ],
                     borderWidth: 0
                 }]
@@ -1218,67 +1368,235 @@
             }
         });
 
-        // Constituencies Data
-        const constituencies = [
-            { name: 'Patna Sahib', candidate: 'Ramesh Kumar', party: 'BJP', status: 'won', votes: 85214 },
-            { name: 'Hajipur', candidate: 'Rajesh Singh', party: 'LJP', status: 'leading', votes: 72145 },
-            { name: 'Nalanda', candidate: 'Vikash Yadav', party: 'JDU', status: 'won', votes: 78321 },
-            { name: 'Madhubani', candidate: 'Sunita Devi', party: 'RJD', status: 'leading', votes: 69452 },
-            { name: 'Gaya Town', candidate: 'Amit Sharma', party: 'BJP', status: 'won', votes: 81234 },
-            { name: 'Bhagalpur', candidate: 'Sanjay Prasad', party: 'INC', status: 'leading', votes: 65432 },
-            { name: 'Muzaffarpur', candidate: 'Anil Kumar', party: 'JDU', status: 'won', votes: 72345 },
-            { name: 'Purnia', candidate: 'Rahul Verma', party: 'RJD', status: 'leading', votes: 69876 }
-        ];
-
-        // Render Constituencies
-        const constituenciesContainer = document.getElementById('constituencies-container');
-        constituencies.forEach((constituency, index) => {
-            const constituencyCard = document.createElement('div');
-            constituencyCard.className = 'constituency-card';
-            constituencyCard.setAttribute('data-aos', 'fade-up');
-            constituencyCard.setAttribute('data-aos-delay', (index * 100).toString());
+        // Populate party dropdown in admin panel
+        function populatePartyDropdown() {
+            const editPartySelect = document.getElementById('edit-party');
+            editPartySelect.innerHTML = '<option value="">Select a party</option>';
             
-            const partyColor = parties.find(p => p.name === constituency.party)?.color || '#808080';
-            
-            constituencyCard.innerHTML = `
-                <div class="constituency-header">
-                    <div class="constituency-name">${constituency.name}</div>
-                    <div class="status ${constituency.status}">${constituency.status === 'won' ? 'Won' : 'Leading'}</div>
-                </div>
-                <div class="constituency-body">
-                    <div class="candidate-info">
-                        <div class="candidate-photo" style="background-color: ${partyColor}">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="candidate-details">
-                            <h4>${constituency.candidate}</h4>
-                            <p>${constituency.party}</p>
-                        </div>
-                    </div>
-                    <div class="votes">
-                        <strong>Votes:</strong> ${constituency.votes.toLocaleString()}
-                    </div>
-                </div>
-            `;
-            
-            constituenciesContainer.appendChild(constituencyCard);
-        });
-
-        // Search Functionality
-        const searchInput = document.querySelector('.search-input');
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            const cards = document.querySelectorAll('.constituency-card');
-            
-            cards.forEach(card => {
-                const name = card.querySelector('.constituency-name').textContent.toLowerCase();
-                if (name.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
+            parties.forEach(party => {
+                const option = document.createElement('option');
+                option.value = party.name;
+                option.textContent = `${party.name} - ${party.fullName}`;
+                editPartySelect.appendChild(option);
             });
+        }
+
+        // Update party form when party is selected
+        document.getElementById('edit-party').addEventListener('change', function() {
+            const selectedParty = this.value;
+            if (selectedParty) {
+                const party = parties.find(p => p.name === selectedParty);
+                document.getElementById('party-seats-won').value = party.seatsWon;
+                document.getElementById('party-seats-leading').value = party.seatsLeading;
+                document.getElementById('party-trend').value = party.trend;
+            } else {
+                document.getElementById('party-seats-won').value = '';
+                document.getElementById('party-seats-leading').value = '';
+                document.getElementById('party-trend').value = 'up';
+            }
         });
+
+        // Update party data in Firebase
+        document.getElementById('update-party').addEventListener('click', async function() {
+            const selectedParty = document.getElementById('edit-party').value;
+            if (!selectedParty) {
+                alert('Please select a party to update.');
+                return;
+            }
+            
+            const seatsWon = parseInt(document.getElementById('party-seats-won').value);
+            const seatsLeading = parseInt(document.getElementById('party-seats-leading').value);
+            const trend = document.getElementById('party-trend').value;
+            
+            if (isNaN(seatsWon) || isNaN(seatsLeading)) {
+                alert('Please enter valid numbers for seats.');
+                return;
+            }
+            
+            // Show loading state
+            const updateBtn = document.getElementById('update-party');
+            const updateText = document.getElementById('update-text');
+            const updateLoading = document.getElementById('update-loading');
+            
+            updateText.textContent = 'Updating...';
+            updateLoading.classList.remove('hidden');
+            updateBtn.disabled = true;
+            
+            try {
+                // Update the party in Firebase
+                await db.collection('parties').doc(selectedParty).update({
+                    seatsWon: seatsWon,
+                    seatsLeading: seatsLeading,
+                    trend: trend
+                });
+                
+                alert('Party data updated successfully in database!');
+            } catch (error) {
+                console.error('Error updating party:', error);
+                alert('Error updating party data: ' + error.message);
+            } finally {
+                // Reset button state
+                updateText.textContent = 'Update Party';
+                updateLoading.classList.add('hidden');
+                updateBtn.disabled = false;
+            }
+        });
+
+        // Add new party to Firebase
+        document.getElementById('add-party').addEventListener('click', async function() {
+            const name = document.getElementById('new-party-name').value.trim();
+            const fullName = document.getElementById('new-party-fullname').value.trim();
+            const color = document.getElementById('new-party-color').value;
+            
+            if (!name || !fullName) {
+                alert('Please enter both party name and full name.');
+                return;
+            }
+            
+            // Show loading state
+            const addBtn = document.getElementById('add-party');
+            const addText = document.getElementById('add-text');
+            const addLoading = document.getElementById('add-loading');
+            
+            addText.textContent = 'Adding...';
+            addLoading.classList.remove('hidden');
+            addBtn.disabled = true;
+            
+            try {
+                // Add the new party to Firebase
+                await db.collection('parties').doc(name).set({
+                    name: name,
+                    fullName: fullName,
+                    color: color,
+                    seatsWon: 0,
+                    seatsLeading: 0,
+                    trend: 'stable'
+                });
+                
+                // Clear form
+                document.getElementById('new-party-name').value = '';
+                document.getElementById('new-party-fullname').value = '';
+                
+                alert('New party added successfully to database!');
+            } catch (error) {
+                console.error('Error adding party:', error);
+                alert('Error adding new party: ' + error.message);
+            } finally {
+                // Reset button state
+                addText.textContent = 'Add New Party';
+                addLoading.classList.add('hidden');
+                addBtn.disabled = false;
+            }
+        });
+
+        // Reset data to default in Firebase
+        document.getElementById('reset-data').addEventListener('click', async function() {
+            if (confirm('Are you sure you want to reset all data to default values? This will overwrite all current data.')) {
+                try {
+                    // Delete all existing parties
+                    const snapshot = await db.collection('parties').get();
+                    const batch = db.batch();
+                    
+                    snapshot.docs.forEach(doc => {
+                        batch.delete(doc.ref);
+                    });
+                    
+                    await batch.commit();
+                    
+                    // Add default parties
+                    for (const party of initialParties) {
+                        await db.collection('parties').doc(party.name).set(party);
+                    }
+                    
+                    alert('Data reset to default values in database.');
+                } catch (error) {
+                    console.error('Error resetting data:', error);
+                    alert('Error resetting data: ' + error.message);
+                }
+            }
+        });
+
+        // Clear all data from Firebase
+        document.getElementById('clear-data').addEventListener('click', async function() {
+            if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
+                try {
+                    const snapshot = await db.collection('parties').get();
+                    const batch = db.batch();
+                    
+                    snapshot.docs.forEach(doc => {
+                        batch.delete(doc.ref);
+                    });
+                    
+                    await batch.commit();
+                    
+                    localStorage.removeItem('adminLoggedIn');
+                    adminPanel.classList.remove('active');
+                    
+                    alert('All data cleared from database. You have been logged out.');
+                } catch (error) {
+                    console.error('Error clearing data:', error);
+                    alert('Error clearing data: ' + error.message);
+                }
+            }
+        });
+
+        // Load parties data from Firebase
+        async function loadPartiesData() {
+            try {
+                const snapshot = await db.collection('parties').get();
+                
+                if (snapshot.empty) {
+                    console.log('No parties found in database. Using initial data.');
+                    // Add initial parties to database
+                    for (const party of initialParties) {
+                        await db.collection('parties').doc(party.name).set(party);
+                    }
+                    // Reload data
+                    await loadPartiesData();
+                    return;
+                }
+                
+                parties = [];
+                snapshot.forEach(doc => {
+                    parties.push(doc.data());
+                });
+                
+                renderParties();
+            } catch (error) {
+                console.error('Error loading parties data:', error);
+                document.getElementById('parties-container').innerHTML = 
+                    '<div class="loading-message">Error loading data. Please check your connection.</div>';
+            }
+        }
+
+        // Set up real-time listener for parties data
+        function setupRealtimeListener() {
+            db.collection('parties').onSnapshot(snapshot => {
+                parties = [];
+                snapshot.forEach(doc => {
+                    parties.push(doc.data());
+                });
+                renderParties();
+            }, error => {
+                console.error('Error in real-time listener:', error);
+            });
+        }
+
+        // Simulate Live Announcements
+        const announcementText = document.getElementById('announcement-text');
+        const announcements = [
+            "LIVE: Counting underway across Bihar. Updates refreshing every second.",
+            "TRENDING: JDU leading in 12 more constituencies",
+            "UPDATE: Voter turnout recorded at 78.2% across Bihar",
+            "RESULT DECLARED: Nalanda won by Vikash Yadav (JDU)",
+            "LIVE: Tight contest in Hajipur, LJP candidate leading by 8543 votes"
+        ];
+        
+        let announcementIndex = 0;
+        setInterval(() => {
+            announcementText.textContent = announcements[announcementIndex];
+            announcementIndex = (announcementIndex + 1) % announcements.length;
+        }, 8000);
 
         // Security - Disable right click
         document.addEventListener('contextmenu', function(e) {
@@ -1295,6 +1613,10 @@
                 return false;
             }
         });
+
+        // Initialize the application
+        loadPartiesData();
+        setupRealtimeListener();
     </script>
 </body>
 </html>
